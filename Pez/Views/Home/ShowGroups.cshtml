@@ -1,0 +1,38 @@
+﻿@model IEnumerable<DataLayer.Models.Product_Groups>
+
+
+@foreach (var group in Model.Where(g => g.ParentID == null))
+{
+    <li class="menu-level-1-li @(Model.Any(g => g.ParentID == group.Id)?"has-child":"")">
+        <a href="/Categories?parentId=@group.Id" class="shpl">@group.GroupTitle</a>
+        @if (Model.Any(g => g.ParentID == group.Id))
+        {
+            <div class="sub-mega-menu">
+                
+                <ul class="child-category-menu menu-level-2">
+                    <li class="go-back in-mobile"><a onclick="goBack(1)">بازگشت</a></li>
+                    @foreach (var subGroup in Model.Where(g => g.ParentID == group.Id))
+                    {
+                        <li class="menu-level-2-li @(Model.Any(ss => ss.ParentID == subGroup.Id)?"has-child":"")">
+                            <a href="/Archive?selectedGroups=@subGroup.Id">@subGroup.GroupTitle</a>
+                            @if (Model.Any(ss => ss.ParentID == subGroup.Id))
+                            {
+                                <div class="sub-mega-menu">
+                                    <ul class=" menu-level-3">
+                                        <li class="go-back in-mobile"><a onclick="goBack(2)">بازگشت</a></li>
+                                        @foreach (var subSubGroup in Model.Where(ss => ss.ParentID == subGroup.Id))
+                                        {
+                                            <li class="menu-level-3-li">
+                                                <a href="/Archive?selectedGroups=@subSubGroup.Id">@subSubGroup.GroupTitle</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    </li>
+}
