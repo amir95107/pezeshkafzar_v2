@@ -1,9 +1,7 @@
 using DataLayer.Data;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
-using Pezeshkafzar_v2.Login;
 using Pezeshkafzar_v2.Repositories;
-using Pezeshkafzar_v2.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,12 +12,25 @@ var configuration = builder.Configuration;
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer();
+builder.Services.AddDefaultIdentity<Users>(options =>
+    options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDBContext>();
 
-builder.Services.ConfigureOptions<JwtOptionsSetup>();
-builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
+
+
+//builder.Services.AddIdentity<Users, IdentityRole<Guid>>(options =>
+//{
+//    options.User.RequireUniqueEmail = false;
+//})
+//        .AddEntityFrameworkStores<ApplicationDBContext>()
+//        .AddDefaultTokenProviders();
+
+builder.Services.AddRazorPages();
+
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddDistributedMemoryCache();
+
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromHours(24);
@@ -46,9 +57,41 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+//app.MapAreaControllerRoute(
+//    name: "admin",
+//    areaName: "admin",
+//    pattern: "admin/{controller=Products}/{action=Index}/{id?}"
+//    );
+
+//app.MapControllerRoute(
+//    name: "admin",
+//    pattern: "admin/{controller=Products}/{action=Index}/{id?}"
+//    );
+
+//app.MapControllerRoute(
+//    name: "admin",
+//    pattern: "{area:exists}/{controller=Products}/{action=Index}/{id?}");
+app.MapAreaControllerRoute(
+    name: "admin",
+    areaName: "admin",
+    pattern: "admin/{controller=products}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+                  name: "areas",
+                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=home}/{action=index}/{id?}");
+
+//app.MapControllerRoute(
+//    name: "admin",
+//    pattern: "admin/{controller}/{action}"
+//);
+
+
+app.MapRazorPages();
 
 app.UseSession();
 

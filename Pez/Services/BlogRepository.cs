@@ -13,16 +13,16 @@ namespace Pezeshkafzar_v2.Services
             NotRemoved = Entities.Where(x => x.RemovedAt == null);
         }
 
-        public async Task<int> BlogsCountAsync(string q, CancellationToken cancellationToken)
+        public async Task<int> BlogsCountAsync(string q)
         => await NotRemoved.CountAsync(x => !string.IsNullOrWhiteSpace(q) ? x.Title.Contains(q) || x.ShortDescription.Contains(q) || x.Text.Contains(q) : true);
 
-        public async Task<Blogs> GetBlogDetailAsync(Guid id, CancellationToken cancellationToken)
-        => await NotRemoved.FirstOrDefaultAsync(x=>x.Id == id, cancellationToken);
+        public async Task<Blogs> GetBlogDetailAsync(Guid id)
+        => await NotRemoved.FirstOrDefaultAsync(x=>x.Id == id);
 
-        public async Task<List<Blogs>> GetBlogsAsync(int take, int skip, string q, CancellationToken cancellationToken)
+        public async Task<List<Blogs>> GetBlogsAsync(int take, int skip, string q)
         => await NotRemoved.Where(x => !string.IsNullOrWhiteSpace(q) ? x.Title.Contains(q) || x.ShortDescription.Contains(q) || x.Text.Contains(q) : true)
             .Take(take)
             .Skip(skip)
-            .ToListAsync(cancellationToken); 
+            .ToListAsync(); 
     }
 }

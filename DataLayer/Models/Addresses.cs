@@ -1,8 +1,10 @@
+using DataLayer.Models.Base;
+
 namespace DataLayer.Models
 {
-    public partial class Addresses : BaseEntity
+    public partial class Addresses : GuidAuditableAggregateRoot
     {
-        public Guid UserID { get; set; }
+        public Guid UserId { get; set; }
         public string Address { get; set; }
         public string Long { get; set; }
         public string Lat { get; set; }
@@ -12,5 +14,7 @@ namespace DataLayer.Models
         public string PostalCode { get; set; }
 
         public virtual Users Users { get; set; }
+
+        
     }
 }

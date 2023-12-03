@@ -15,25 +15,28 @@ namespace Pezeshkafzar_v2.Services
             _orderDetails = context.Set<OrderDetails>();
         }
 
-        public async Task<DeliveryWays> GetDeliveryWayAsync(Guid deliveryWayId, CancellationToken cancellationToken)
-            => await _deliveryWays.FirstOrDefaultAsync(x => x.Id == deliveryWayId && x.IsActive, cancellationToken);
+        public async Task<DeliveryWays> GetDeliveryWayAsync(Guid deliveryWayId)
+            => await _deliveryWays.FirstOrDefaultAsync(x => x.Id == deliveryWayId && x.IsActive);
 
-        public async Task<List<DeliveryWays>> GetDeliveryWaysAsync(CancellationToken cancellationToken)
+        public async Task<List<DeliveryWays>> GetDeliveryWaysAsync( )
             => await _deliveryWays.Where(x => x.IsActive).ToListAsync();
 
-        public async Task<Orders> GetOrderByTrackingCodeAsync(string trackingCode, CancellationToken cancellationToken)
-            => await Entities.FirstOrDefaultAsync(x => x.TraceCode == trackingCode, cancellationToken);
+        public async Task<Orders> GetOrderByTrackingCodeAsync(string trackingCode)
+            => await Entities.FirstOrDefaultAsync(x => x.TraceCode == trackingCode);
 
-        public async Task<List<OrderDetails>> GetOrderDetailsAsync(Guid orderId, CancellationToken cancellationToken)
-            => await _orderDetails.Where(x => x.OrderID == orderId).ToListAsync(cancellationToken);
+        public async Task<List<OrderDetails>> GetOrderDetailsAsync(Guid orderId)
+            => await _orderDetails.Where(x => x.OrderID == orderId).ToListAsync();
 
-        public async Task<List<string>> GetTrackingCodeListByUserIdAsync(Guid userId, CancellationToken cancellationToken)
-            => await Entities.Where(x => x.UserID == userId).Select(x => x.TraceCode).ToListAsync(cancellationToken);
+        public async Task<List<Orders>> GetOrdersAsync()
+            => await Entities.OrderByDescending(x => x.Date).ToListAsync();
 
-        public async Task<List<Orders>> GetUserOrderAsync(Guid userId, CancellationToken cancellationToken)
-            => await Entities.Where(x => x.UserID == userId).ToListAsync(cancellationToken);
+        public async Task<List<string>> GetTrackingCodeListByUserIdAsync(Guid userId)
+            => await Entities.Where(x => x.UserId == userId).Select(x => x.TraceCode).ToListAsync();
 
-        public async Task<bool> IsOrderFinalAsync(Guid orderId, CancellationToken cancellationToken)
+        public async Task<List<Orders>> GetUserOrderAsync(Guid userId)
+            => await Entities.Where(x => x.UserId == userId).OrderByDescending(x => x.Date).ToListAsync();
+
+        public async Task<bool> IsOrderFinalAsync(Guid orderId)
         {
             var order = await Entities.FindAsync(orderId);
             if(order == null)

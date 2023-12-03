@@ -14,33 +14,42 @@ namespace Pezeshkafzar_v2.Controllers
         private readonly IHomeRepository _homeRepository;
         private readonly IProductRepository _productRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IBrandRepository _brandRepository;
+        private readonly Guid CurrentUserId;
 
         public HomeController(IHomeRepository homeRepository,
             IProductRepository productRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IBrandRepository brandRepository,
+            IHttpContextAccessor accessor)
         {
             _homeRepository = homeRepository;
             _productRepository = productRepository;
             _userRepository = userRepository;
+            CurrentUserId = Guid.NewGuid();
+            _brandRepository = brandRepository;
+            CurrentUserId = accessor.HttpContext.User.Identity.IsAuthenticated ? Guid.Parse(accessor.HttpContext.User.Claims.FirstOrDefault().Value) : Guid.Empty;
         }
 
-        public async Task<IActionResult> ShowGroups(CancellationToken cancellationToken)
+
+
+        public async Task<IActionResult> ShowGroups( )
         {
-            return PartialView(await _productRepository.GetProductGroupsAsync(false, cancellationToken));
+            return PartialView(await _productRepository.GetProductGroupsAsync(false));
         }
 
         // GET: Home
-        public async Task<IActionResult> Index(CancellationToken cancellationToken)
+        public async Task<IActionResult> Index( )
         {
-            var bList = await _productRepository.GetAllBrandsAsync(cancellationToken);
+            var bList = await _brandRepository.GetAllBrandsAsync();
             ViewBag.Brands = bList;
             return View();
         }
 
         [Route("AboutUs")]
-        public async Task<IActionResult> AboutUs(CancellationToken cancellationToken)
+        public async Task<IActionResult> AboutUs( )
         {
-            Page data = await _homeRepository.GetPageDetailAsync(2, cancellationToken);
+            Page data = await _homeRepository.GetPageDetailAsync(2);
             ViewBag.PageTitle = data.PageTitle;
             ViewBag.Title = data.HeadTitle;
             ViewBag.Description = data.MetaDescription;
@@ -49,9 +58,9 @@ namespace Pezeshkafzar_v2.Controllers
         }
 
         [Route("ContactUs")]
-        public async Task<IActionResult> ContactUs(CancellationToken cancellationToken)
+        public async Task<IActionResult> ContactUs( )
         {
-            Page data = await _homeRepository.GetPageDetailAsync(1, cancellationToken);
+            Page data = await _homeRepository.GetPageDetailAsync(1);
             ViewBag.PageTitle = data.PageTitle;
             ViewBag.Title = data.HeadTitle;
             ViewBag.Description = data.MetaDescription;
@@ -124,20 +133,20 @@ namespace Pezeshkafzar_v2.Controllers
         }
 
         [Route("Faq")]
-        public async Task<IActionResult> Faq(CancellationToken cancellationToken)
+        public async Task<IActionResult> Faq( )
         {
-            Page data = await _homeRepository.GetPageDetailAsync(3, cancellationToken);
+            Page data = await _homeRepository.GetPageDetailAsync(3);
             ViewBag.PageTitle = data.PageTitle;
             ViewBag.Title = data.HeadTitle;
             ViewBag.Description = data.MetaDescription;
             ViewBag.Content = data.PageContent;
-            return View(await _homeRepository.GetFaqsAsync(cancellationToken));
+            return View(await _homeRepository.GetFaqsAsync());
         }
 
         [Route("terms-and-conditions")]
-        public async Task<IActionResult> PrivacyAndPolicy(CancellationToken cancellationToken)
+        public async Task<IActionResult> PrivacyAndPolicy( )
         {
-            Page data = await _homeRepository.GetPageDetailAsync(4, cancellationToken);
+            Page data = await _homeRepository.GetPageDetailAsync(4);
             ViewBag.PageTitle = data.PageTitle;
             ViewBag.Title = data.HeadTitle;
             ViewBag.Description = data.MetaDescription;
@@ -145,19 +154,19 @@ namespace Pezeshkafzar_v2.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Header(CancellationToken cancellationToken)
+        public async Task<IActionResult> Header( )
         {
             Guid roleId = Guid.Empty;
             bool isUserInformationComplete = false;
             if (User.Identity.IsAuthenticated)
             {
-                var user = await _userRepository.GetUserAsync("", cancellationToken);
+                var user = await _userRepository.GetUserAsync("");
                 if (user == null)
                 {
                     return Redirect("/ServerError");
                 }
-                roleId = user.Roles.Id;
-                isUserInformationComplete = user.IsUserInfoCompleted;
+                //roleId = user..Id;
+                //isUserInformationComplete = user.IsUserInfoCompleted;
             }
             ViewBag.IsUserInformationComplete = isUserInformationComplete;
             ViewBag.Role = roleId;
@@ -169,8 +178,8 @@ namespace Pezeshkafzar_v2.Controllers
             return PartialView();
         }
 
-        public async Task<IActionResult> Slider(CancellationToken cancellationToken)
-            => PartialView(await _homeRepository.GetSliderListAsync(cancellationToken));
+        public async Task<IActionResult> Slider( )
+            => PartialView(await _homeRepository.GetSliderListAsync());
 
         public async Task<IActionResult> HumanBody()
         {
@@ -187,7 +196,7 @@ namespace Pezeshkafzar_v2.Controllers
         //    db.SaveChanges();
         //}
 
-        public async Task<IActionResult> Footer()
+        public IActionResult Footer()
         {
             return PartialView();
         }
@@ -204,10 +213,10 @@ namespace Pezeshkafzar_v2.Controllers
             return View();
         }
 
-        public async Task<IActionResult> SomeProductGroups(CancellationToken cancellationToken)
+        public async Task<IActionResult> SomeProductGroups( )
         {
             //return PartialView(db.Product_Groups.ToList());
-            return PartialView(await _productRepository.GetProductGroupsAsync(false,cancellationToken));
+            return PartialView(await _productRepository.GetProductGroupsAsync(false));
         }
 
         public async Task<IActionResult> BottomMenu()

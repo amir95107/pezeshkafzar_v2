@@ -2,8 +2,9 @@ namespace DataLayer.Models
 {
     using System;
     using System.Collections.Generic;
+    using DataLayer.Models.Base;
 
-    public partial class Products : BaseEntity
+    public partial class Products : GuidAuditableAggregateRoot
     {
         public string UniqueKey { get; set; }
         public string Title { get; set; }
@@ -16,7 +17,6 @@ namespace DataLayer.Models
         public int LikeCount { get; set; }
         public int Stock { get; set; }
         public double? Point { get; set; }
-        public int? SellerID { get; set; }
         public bool IsAcceptedByAdmin { get; set; }
         public bool IsActive { get; set; }
         public bool IsSpecial { get; set; }
@@ -35,7 +35,6 @@ namespace DataLayer.Models
         public virtual ICollection<Product_Selected_Groups> Product_Selected_Groups { get; set; } = new HashSet<Product_Selected_Groups>();
         public virtual ICollection<Product_Tags> Product_Tags { get; set; } = new HashSet<Product_Tags>();
         public virtual ICollection<ProductBrand> ProductBrand { get; set; } = new HashSet<ProductBrand>();
-        public virtual Sellers Sellers { get; set; }
         public virtual ICollection<Comments> Comments { get; set; } = new HashSet<Comments>();
     }
 }

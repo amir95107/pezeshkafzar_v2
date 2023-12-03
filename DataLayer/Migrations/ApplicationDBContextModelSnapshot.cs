@@ -17,7 +17,7 @@ namespace DataLayer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -53,10 +53,10 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PostalCode")
@@ -73,17 +73,12 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("UsersId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserID");
-
-                    b.HasIndex("UsersId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Addresses");
                 });
@@ -111,10 +106,10 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemovedAt")
@@ -171,10 +166,10 @@ namespace DataLayer.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemovedAt")
@@ -207,10 +202,10 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Operator")
@@ -241,9 +236,6 @@ namespace DataLayer.Migrations
                     b.Property<Guid?>("BlogID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BlogsId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -260,10 +252,10 @@ namespace DataLayer.Migrations
                     b.Property<bool>("IsShow")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -276,9 +268,6 @@ namespace DataLayer.Migrations
                     b.Property<Guid?>("ProductID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ProductsId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime?>("RemovedAt")
                         .HasColumnType("datetime2");
 
@@ -289,11 +278,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("BlogID");
 
-                    b.HasIndex("BlogsId");
-
                     b.HasIndex("ProductID");
-
-                    b.HasIndex("ProductsId");
 
                     b.ToTable("Comments");
                 });
@@ -328,10 +313,10 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -344,6 +329,12 @@ namespace DataLayer.Migrations
                     b.Property<Guid?>("RemovedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<string>("Subject")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -352,7 +343,7 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("UserID")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UsersId")
@@ -384,10 +375,10 @@ namespace DataLayer.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("PayByCustomer")
@@ -447,10 +438,10 @@ namespace DataLayer.Migrations
                     b.Property<decimal>("MaxDiscountValue")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemovedAt")
@@ -459,7 +450,7 @@ namespace DataLayer.Migrations
                     b.Property<Guid?>("RemovedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UsersId")
@@ -491,10 +482,10 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemovedAt")
@@ -514,9 +505,6 @@ namespace DataLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -527,10 +515,10 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemovedAt")
@@ -538,6 +526,12 @@ namespace DataLayer.Migrations
 
                     b.Property<Guid?>("RemovedBy")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
@@ -559,16 +553,13 @@ namespace DataLayer.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ProductID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ProductsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemovedAt")
@@ -577,21 +568,20 @@ namespace DataLayer.Migrations
                     b.Property<Guid?>("RemovedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
-                    b.Property<Guid?>("UsersId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductID");
 
-                    b.HasIndex("ProductsId");
-
-                    b.HasIndex("UserID");
-
-                    b.HasIndex("UsersId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("LikeProduct");
                 });
@@ -614,16 +604,13 @@ namespace DataLayer.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("OrderID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("OrdersId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
@@ -641,14 +628,18 @@ namespace DataLayer.Migrations
                     b.Property<Guid?>("RemovedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<decimal>("TotalDiscount")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderID");
-
-                    b.HasIndex("OrdersId");
 
                     b.HasIndex("ProductsId");
 
@@ -685,10 +676,10 @@ namespace DataLayer.Migrations
                     b.Property<bool>("IsSent")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Payable")
@@ -710,7 +701,7 @@ namespace DataLayer.Migrations
                     b.Property<bool>("UseDiscountCode")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UsersId")
@@ -745,10 +736,10 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PageContent")
@@ -786,25 +777,19 @@ namespace DataLayer.Migrations
                     b.Property<Guid>("BrandID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BrandsId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ProductID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ProductsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemovedAt")
@@ -813,13 +798,17 @@ namespace DataLayer.Migrations
                     b.Property<Guid?>("RemovedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandsId");
+                    b.HasIndex("BrandID");
 
                     b.HasIndex("ProductID");
-
-                    b.HasIndex("ProductsId");
 
                     b.ToTable("ProductBrand");
                 });
@@ -839,23 +828,16 @@ namespace DataLayer.Migrations
                     b.Property<Guid>("FeatureID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("FeaturesId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("ImageName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ProductID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ProductsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemovedAt")
@@ -863,6 +845,12 @@ namespace DataLayer.Migrations
 
                     b.Property<Guid?>("RemovedBy")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -872,11 +860,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("FeatureID");
 
-                    b.HasIndex("FeaturesId");
-
                     b.HasIndex("ProductID");
-
-                    b.HasIndex("ProductsId");
 
                     b.ToTable("Product_Features");
                 });
@@ -897,16 +881,13 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ProductID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ProductsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemovedAt")
@@ -915,6 +896,12 @@ namespace DataLayer.Migrations
                     b.Property<Guid?>("RemovedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -922,8 +909,6 @@ namespace DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProductID");
-
-                    b.HasIndex("ProductsId");
 
                     b.ToTable("Product_Galleries");
                 });
@@ -947,14 +932,13 @@ namespace DataLayer.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("ParentID")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemovedAt")
@@ -964,6 +948,9 @@ namespace DataLayer.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ShowOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UniqueKey")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -988,19 +975,13 @@ namespace DataLayer.Migrations
                     b.Property<Guid>("GroupID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ProductID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("Product_GroupsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ProductsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemovedAt")
@@ -1009,15 +990,17 @@ namespace DataLayer.Migrations
                     b.Property<Guid?>("RemovedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GroupID");
 
                     b.HasIndex("ProductID");
-
-                    b.HasIndex("Product_GroupsId");
-
-                    b.HasIndex("ProductsId");
 
                     b.ToTable("Product_Selected_Groups");
                 });
@@ -1034,16 +1017,13 @@ namespace DataLayer.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ProductID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ProductsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemovedAt")
@@ -1052,6 +1032,12 @@ namespace DataLayer.Migrations
                     b.Property<Guid?>("RemovedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<string>("Tag")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1059,8 +1045,6 @@ namespace DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProductID");
-
-                    b.HasIndex("ProductsId");
 
                     b.ToTable("Product_Tags");
                 });
@@ -1109,10 +1093,10 @@ namespace DataLayer.Migrations
                     b.Property<int?>("MinCount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double?>("Point")
@@ -1133,12 +1117,6 @@ namespace DataLayer.Migrations
                     b.Property<string>("SefUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SellerID")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SellersId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ShortDescription")
                         .IsRequired()
@@ -1167,124 +1145,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SellersId");
-
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("DataLayer.Models.Roles", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("RemovedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("RemovedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoleTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("DataLayer.Models.Sellers", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsAcceptedByAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Lat")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Long")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double?>("Point")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime?>("RemovedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("RemovedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("SellerFullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StoreAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StoreName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telephone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("Sellers");
                 });
 
             modelBuilder.Entity("DataLayer.Models.Slider", b =>
@@ -1309,10 +1170,10 @@ namespace DataLayer.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemovedAt")
@@ -1320,6 +1181,12 @@ namespace DataLayer.Migrations
 
                     b.Property<Guid?>("RemovedBy")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -1350,17 +1217,20 @@ namespace DataLayer.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemovedAt")
@@ -1369,11 +1239,16 @@ namespace DataLayer.Migrations
                     b.Property<Guid?>("RemovedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Telephone")
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
                         .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Telephone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UsersId")
@@ -1386,131 +1261,237 @@ namespace DataLayer.Migrations
                     b.ToTable("UserInfo");
                 });
 
-            modelBuilder.Entity("DataLayer.Models.UserRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("CreatedBy")
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime2");
+                    b.HasKey("Id");
 
-                    b.Property<Guid?>("ModifiedBy")
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser<System.Guid>", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("RemovedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
 
-                    b.Property<Guid?>("RemovedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RoleID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser<Guid>");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleID");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRole");
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("DataLayer.Models.Users", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ActiveCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser<System.Guid>");
 
                     b.Property<bool?>("IsLocked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsMobileConfirmed")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsUserInfoCompleted")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("LoginAtempts")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Mobile")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("RemovedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("RemovedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RoleID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RolesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RolesId");
-
-                    b.ToTable("Users");
+                    b.HasDiscriminator().HasValue("Users");
                 });
 
             modelBuilder.Entity("DataLayer.Models.Addresses", b =>
                 {
                     b.HasOne("DataLayer.Models.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DataLayer.Models.Users", null)
                         .WithMany("Addresses")
-                        .HasForeignKey("UsersId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Users_Addresses");
 
                     b.Navigation("Users");
                 });
@@ -1518,22 +1499,16 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Models.Comments", b =>
                 {
                     b.HasOne("DataLayer.Models.Blogs", "Blogs")
-                        .WithMany()
-                        .HasForeignKey("BlogID")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("DataLayer.Models.Blogs", null)
                         .WithMany("Comments")
-                        .HasForeignKey("BlogsId");
+                        .HasForeignKey("BlogID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("FK_Blogs_Comments");
 
                     b.HasOne("DataLayer.Models.Products", "Products")
-                        .WithMany()
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("DataLayer.Models.Products", null)
                         .WithMany("Comments")
-                        .HasForeignKey("ProductsId");
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("FK_Products_Comments");
 
                     b.Navigation("Blogs");
 
@@ -1565,24 +1540,18 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Models.LikeProduct", b =>
                 {
                     b.HasOne("DataLayer.Models.Products", "Products")
-                        .WithMany()
+                        .WithMany("LikeProduct")
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DataLayer.Models.Products", null)
-                        .WithMany("LikeProduct")
-                        .HasForeignKey("ProductsId");
+                        .IsRequired()
+                        .HasConstraintName("FK_Products_LikeProduct");
 
                     b.HasOne("DataLayer.Models.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DataLayer.Models.Users", null)
                         .WithMany("LikeProduct")
-                        .HasForeignKey("UsersId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Users_LikeProduct");
 
                     b.Navigation("Products");
 
@@ -1592,14 +1561,11 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Models.OrderDetails", b =>
                 {
                     b.HasOne("DataLayer.Models.Orders", "Orders")
-                        .WithMany()
+                        .WithMany("OrderDetails")
                         .HasForeignKey("OrderID")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DataLayer.Models.Orders", null)
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("OrdersId");
+                        .IsRequired()
+                        .HasConstraintName("FK_Orders_OrderDetails");
 
                     b.HasOne("DataLayer.Models.Products", "Products")
                         .WithMany("OrderDetails")
@@ -1635,19 +1601,17 @@ namespace DataLayer.Migrations
                 {
                     b.HasOne("DataLayer.Models.Brands", "Brands")
                         .WithMany("ProductBrand")
-                        .HasForeignKey("BrandsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BrandID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Brands_ProductBrand");
 
                     b.HasOne("DataLayer.Models.Products", "Products")
-                        .WithMany()
+                        .WithMany("ProductBrand")
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DataLayer.Models.Products", null)
-                        .WithMany("ProductBrand")
-                        .HasForeignKey("ProductsId");
+                        .IsRequired()
+                        .HasConstraintName("FK_Products_ProductBrand");
 
                     b.Navigation("Brands");
 
@@ -1657,24 +1621,18 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Models.Product_Features", b =>
                 {
                     b.HasOne("DataLayer.Models.Features", "Features")
-                        .WithMany()
+                        .WithMany("Product_Features")
                         .HasForeignKey("FeatureID")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DataLayer.Models.Features", null)
-                        .WithMany("Product_Features")
-                        .HasForeignKey("FeaturesId");
+                        .IsRequired()
+                        .HasConstraintName("FK_Features_Product_Features");
 
                     b.HasOne("DataLayer.Models.Products", "Products")
-                        .WithMany()
+                        .WithMany("Product_Features")
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DataLayer.Models.Products", null)
-                        .WithMany("Product_Features")
-                        .HasForeignKey("ProductsId");
+                        .IsRequired()
+                        .HasConstraintName("FK_Products_Product_Features");
 
                     b.Navigation("Features");
 
@@ -1684,14 +1642,11 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Models.Product_Galleries", b =>
                 {
                     b.HasOne("DataLayer.Models.Products", "Products")
-                        .WithMany()
+                        .WithMany("Product_Galleries")
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DataLayer.Models.Products", null)
-                        .WithMany("Product_Galleries")
-                        .HasForeignKey("ProductsId");
+                        .IsRequired()
+                        .HasConstraintName("FK_Products_Product_Galleries");
 
                     b.Navigation("Products");
                 });
@@ -1699,10 +1654,10 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Models.Product_Groups", b =>
                 {
                     b.HasOne("DataLayer.Models.Product_Groups", "Parent")
-                        .WithMany()
+                        .WithMany("Children")
                         .HasForeignKey("ParentID")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasConstraintName("FK_Product_Groups_Product_Groups");
 
                     b.Navigation("Parent");
                 });
@@ -1710,24 +1665,18 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Models.Product_Selected_Groups", b =>
                 {
                     b.HasOne("DataLayer.Models.Product_Groups", "Product_Groups")
-                        .WithMany()
+                        .WithMany("Product_Selected_Groups")
                         .HasForeignKey("GroupID")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Product_Groups_Product_Selected_Groups");
 
                     b.HasOne("DataLayer.Models.Products", "Products")
-                        .WithMany()
+                        .WithMany("Product_Selected_Groups")
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DataLayer.Models.Product_Groups", null)
-                        .WithMany("Product_Selected_Groups")
-                        .HasForeignKey("Product_GroupsId");
-
-                    b.HasOne("DataLayer.Models.Products", null)
-                        .WithMany("Product_Selected_Groups")
-                        .HasForeignKey("ProductsId");
+                        .IsRequired()
+                        .HasConstraintName("FK_Products_Product_Selected_Groups");
 
                     b.Navigation("Product_Groups");
 
@@ -1737,38 +1686,13 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Models.Product_Tags", b =>
                 {
                     b.HasOne("DataLayer.Models.Products", "Products")
-                        .WithMany()
+                        .WithMany("Product_Tags")
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DataLayer.Models.Products", null)
-                        .WithMany("Product_Tags")
-                        .HasForeignKey("ProductsId");
+                        .IsRequired()
+                        .HasConstraintName("FK_Products_Product_Tags");
 
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("DataLayer.Models.Products", b =>
-                {
-                    b.HasOne("DataLayer.Models.Sellers", "Sellers")
-                        .WithMany("Products")
-                        .HasForeignKey("SellersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Sellers");
-                });
-
-            modelBuilder.Entity("DataLayer.Models.Sellers", b =>
-                {
-                    b.HasOne("DataLayer.Models.Users", "Users")
-                        .WithMany("Sellers")
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("DataLayer.Models.UserInfo", b =>
@@ -1782,34 +1706,55 @@ namespace DataLayer.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("DataLayer.Models.UserRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("DataLayer.Models.Roles", "Roles")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
-                        .HasForeignKey("RoleID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("DataLayer.Models.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Roles");
-
-                    b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("DataLayer.Models.Users", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("DataLayer.Models.Roles", "Roles")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser<System.Guid>", null)
                         .WithMany()
-                        .HasForeignKey("RolesId")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Roles");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DataLayer.Models.Blogs", b =>
@@ -1839,6 +1784,8 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DataLayer.Models.Product_Groups", b =>
                 {
+                    b.Navigation("Children");
+
                     b.Navigation("Product_Selected_Groups");
                 });
 
@@ -1861,11 +1808,6 @@ namespace DataLayer.Migrations
                     b.Navigation("Product_Tags");
                 });
 
-            modelBuilder.Entity("DataLayer.Models.Sellers", b =>
-                {
-                    b.Navigation("Products");
-                });
-
             modelBuilder.Entity("DataLayer.Models.Users", b =>
                 {
                     b.Navigation("Addresses");
@@ -1877,8 +1819,6 @@ namespace DataLayer.Migrations
                     b.Navigation("LikeProduct");
 
                     b.Navigation("Orders");
-
-                    b.Navigation("Sellers");
 
                     b.Navigation("UserInfo");
                 });

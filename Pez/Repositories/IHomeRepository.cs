@@ -4,8 +4,8 @@ namespace Pezeshkafzar_v2.Repositories
 {
     public interface IHomeRepository : IBaseRepository<Page,Guid>
     {
-        Task<Page> GetPageDetailAsync(int pageKey, CancellationToken cancellationToken);
-        Task<List<Slider>> GetSliderListAsync(CancellationToken cancellationToken);
-        Task<List<ContactForm>> GetFaqsAsync(CancellationToken cancellationToken);
+        Task<Page> GetPageDetailAsync(int pageKey);
+        Task<List<Slider>> GetSliderListAsync( );
+        Task<List<ContactForm>> GetFaqsAsync( );
     }
 }

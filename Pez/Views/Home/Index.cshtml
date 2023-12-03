@@ -65,8 +65,8 @@
             }
             @foreach (var item in bList)
             {
-                <a href="/Archive?brandId=@item.BrandID" class="brand shpl">
-                    <img class="owl-lazy" data-src="/Images/ProductImages/@item.BrandImageName" alt="@item.BrandTitle" title="@item.BrandTitle">
+                <a href="/Archive?brandId=@item.Id" class="brand shpl">
+                    <img class="owl-lazy" data-src="/Images/brands/@item.BrandImageName" alt="@item.BrandTitle" title="@item.BrandTitle">
                 </a>
             }
 

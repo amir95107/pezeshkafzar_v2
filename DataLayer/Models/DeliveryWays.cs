@@ -1,9 +1,9 @@
 namespace DataLayer.Models
 {
-    using DataLayer.Models;
+    using DataLayer.Models.Base;
     using System.Collections.Generic;
 
-    public partial class DeliveryWays: BaseEntity
+    public partial class DeliveryWays: GuidAuditableAggregateRoot
     {
         public string Title { get; set; }
         public int? Price { get; set; }
@@ -14,5 +14,20 @@ namespace DataLayer.Models
         public bool IsActive { get; set; }
     
         public virtual ICollection<Orders> Orders { get; set; } = new HashSet<Orders>();
+
+        protected override void EnsureReadyState(object @event)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void EnsureValidState()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void When(object @event)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

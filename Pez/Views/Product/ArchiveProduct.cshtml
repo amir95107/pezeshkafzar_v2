@@ -5,15 +5,15 @@
     int pageId = ViewBag.pageId;
     int take = ViewBag.Take;
     int total = ViewBag.ProductsCount;
-    int min = ViewBag.minPrice;
-    int max = ViewBag.maxPrice;
+    decimal min = ViewBag.minPrice;
+    decimal max = ViewBag.maxPrice;
     // if (Request.QueryString["minPrice"] != null && Request.QueryString["maxPrice"] != null)
     // {
     //     min = int.Parse(Request.QueryString["minPrice"].ToString());
     //     max = int.Parse(Request.QueryString["maxPrice"].ToString());
     // }
-    int minest = ViewBag.minPrice;
-    int maxest = ViewBag.maxPrice;
+    decimal minest = ViewBag.minPrice;
+    decimal maxest = ViewBag.maxPrice;
 }
 
 
@@ -114,7 +114,7 @@
                                     foreach (var product in Model)
                                     {
                                         <div class="col-6 col-md-3 col-lg-3 product-item">
-                                            @Html.Action("_product", product)
+                                            @await Html.PartialAsync("_product", product)
                                         </div><!-- End .col-sm-6 col-lg-4 -->
                                     }
                                 }

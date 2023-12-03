@@ -1,13 +1,13 @@
 namespace DataLayer.Models
 {
-    using DataLayer.Models;
+    using DataLayer.Models.Base;
     using System;
     using System.Collections.Generic;
 
-    public partial class Orders : BaseEntity
+    public partial class Orders : GuidAuditableAggregateRoot
     {
         public string TraceCode { get; set; }
-        public Guid UserID { get; set; }
+        public Guid UserId { get; set; }
         public DateTime Date { get; set; }
         public int Payable { get; set; }
         public bool IsFinaly { get; set; }
@@ -20,5 +20,20 @@ namespace DataLayer.Models
         public virtual DeliveryWays DeliveryWays { get; set; }
         public virtual ICollection<OrderDetails> OrderDetails { get; set; } = new HashSet<OrderDetails>();
         public virtual Users Users { get; set; }
+
+        protected override void EnsureReadyState(object @event)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void EnsureValidState()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void When(object @event)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

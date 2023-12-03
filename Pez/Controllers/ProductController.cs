@@ -11,25 +11,32 @@ namespace Pezeshkafzar_v2.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
+        private readonly IBrandRepository _brandRepository;
+        private Guid CurrentUserId;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(
+            IHttpContextAccessor accessor,
+            IProductRepository productRepository,
+            IBrandRepository brandRepository)
         {
             _productRepository = productRepository;
+            _brandRepository = brandRepository;
+            CurrentUserId = accessor.HttpContext.User.Identity.IsAuthenticated ? Guid.Parse(accessor.HttpContext.User.Claims.FirstOrDefault().Value) : Guid.Empty;
         }
 
-        
 
 
-        public async Task<IActionResult> LastProduct(CancellationToken cancellationToken)
-            => PartialView(await _productRepository.GetLastAddedProductsAsync(3, cancellationToken));
 
-        public async Task<IActionResult> SpecialOffer(CancellationToken cancellationToken)
-            => PartialView(await _productRepository.GetSpecialProductsAsync(cancellationToken));
+        public async Task<IActionResult> LastProduct()
+            => PartialView(await _productRepository.GetLastAddedProductsAsync(3));
+
+        public async Task<IActionResult> SpecialOffer()
+            => PartialView(await _productRepository.GetSpecialProductsAsync());
 
         [Route("AllOffers")]
-        public async Task<IActionResult> AllOffers(CancellationToken cancellationToken, int take = 16, int skip = 0)
+        public async Task<IActionResult> AllOffers(int take = 16, int skip = 0)
         {
-            var products = await _productRepository.GetAllProductsWithDiscountAsync(take, skip, cancellationToken);
+            var products = await _productRepository.GetAllProductsWithDiscountAsync(take, skip);
 
             var pageCount = products.Count() / take + 1;
             if (products.Count() % take == 0)
@@ -41,7 +48,7 @@ namespace Pezeshkafzar_v2.Controllers
             return View(products);
         }
 
-        public async Task<IActionResult> LastSeenProducts(CancellationToken cancellationToken)
+        public async Task<IActionResult> LastSeenProducts()
         {
             var cookies = Request.Cookies
                 .Where(l => l.Key.StartsWith("SeenProduct-") && !string.IsNullOrWhiteSpace(l.Value));
@@ -51,7 +58,7 @@ namespace Pezeshkafzar_v2.Controllers
             {
                 if (seen >= 5)
                     break;
-                var product = await _productRepository.FindAsync(Guid.Parse(item.Value), cancellationToken);
+                var product = await _productRepository.FindAsync(Guid.Parse(item.Value));
                 if (product != null)
                 {
                     lastSeen.Add(product);
@@ -65,33 +72,33 @@ namespace Pezeshkafzar_v2.Controllers
 
 
 
-        [Route("ShowProduct/{id}/{sefUrl}")]
-        public async Task<IActionResult> ShowProduct(string uniqueKey, string sefUrl, CancellationToken cancellationToken)
+        [Route("product/{id}/{sefUrl}")]
+        public async Task<IActionResult> ShowProduct(Guid id, string sefUrl)
         {
-            var product = await _productRepository.ProductDetailAsync(uniqueKey, cancellationToken);
+            var product = await _productRepository.ProductDetailAsync(id);
             if (product != null)
             {
                 if (product.IsAcceptedByAdmin)
                 {
                     if (product.SefUrl != sefUrl)
                     {
-                        return RedirectPermanent($"/ShowProduct/{uniqueKey}/{product.SefUrl}");
+                        return RedirectPermanent($"/ShowProduct/{id}/{product.SefUrl}");
                     }
                     ViewBag.LastUpdate = TimeHelper.Detail((DateTime)product.LastUpdated);
-                    ViewBag.Galleries = await _productRepository.GetProductGalleriesAsync(product.Id, cancellationToken);
+                    ViewBag.Galleries = await _productRepository.GetProductGalleriesAsync(product.Id);
                     //ViewBag.ProductFeatures = product.Product_Features.DistinctBy(f=>f.FeatureID).Select(f=>new ShowProductFeatureViewModel()
                     //{
                     //    FeatureTitle = f.Features.FeatureTitle,
                     //    Values = db.Product_Features.Where(fe=>fe.FeatureID==f.FeatureID).Select(fe=>fe.Value).ToList()
                     //}).ToList();
-                    ViewBag.Size = await _productRepository.GetProductFeaturesAsync(product.Id, Guid.Parse(""), cancellationToken);
+                    ViewBag.Size = await _productRepository.GetProductFeaturesAsync(product.Id, Guid.Parse("2d9436a0-0dc2-4a8a-a009-e36d0275b6f9"));
                     if (product == null)
                     {
                         return NotFound();
                     }
                     if (User.Identity.IsAuthenticated)
                     {
-                        ViewBag.IsLiked = await _productRepository.IsProductLiked(Guid.Empty, product.Id, cancellationToken);
+                        ViewBag.IsLiked = await _productRepository.IsProductLiked(CurrentUserId, product.Id);
                     }
                     SetCookie($"SeenProduct-{product.UniqueKey}", product.Id.ToString(), 7);
                     //product.Visit++;
@@ -109,9 +116,9 @@ namespace Pezeshkafzar_v2.Controllers
             }
         }
 
-        public async Task<IActionResult> ShowComments(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> ShowComments(Guid id)
         {
-            return PartialView(await _productRepository.GetProductCommentsAsync(id, cancellationToken));
+            return PartialView(await _productRepository.GetProductCommentsAsync(id));
         }
 
         [Route("Product/CreateComment/{id}")]
@@ -126,7 +133,7 @@ namespace Pezeshkafzar_v2.Controllers
         [Authorize]
         [HttpPost]
         [Route("Product/CreateComment/{id}")]
-        public async Task<IActionResult> CreateComment(Comments productComment, Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateComment(Comments productComment, Guid id)
         {
             if (ModelState.IsValid)
             {
@@ -134,24 +141,24 @@ namespace Pezeshkafzar_v2.Controllers
                 productComment.CreateDate = DateTime.Now;
                 productComment.IsShow = false;
 
-                var product = await _productRepository.FindAsync(id, cancellationToken);
+                var product = await _productRepository.FindAsync(id);
                 product.Comments.Add(productComment);
                 _productRepository.Modify(product);
-                await _productRepository.SaveChangesAsync(cancellationToken);
+                await _productRepository.SaveChangesAsync();
                 SendEmail.Send("a.janmohammadi@gmail.com", "",
                     "کامنت برای محصول " + productComment.Products.Title,
                     "یک نظر برای محصول " + productComment.Products.Title + " از طرف " + productComment.Name + " اومده.");
 
                 return PartialView("ShowComments",
-                    await _productRepository.GetProductCommentsAsync(id, cancellationToken));
+                    await _productRepository.GetProductCommentsAsync(id));
             }
             return PartialView(productComment);
         }
 
         [Route("Archive")]
-        public async Task<IActionResult> ArchiveProduct(CancellationToken cancellationToken, int pageId = 1, string title = "", decimal minPrice = 0, decimal maxPrice = 0, List<Guid>? selectedGroups = null, Guid? brandId = null)
+        public async Task<IActionResult> ArchiveProduct(int pageId = 1, string title = "", decimal minPrice = 0, decimal maxPrice = 0, List<Guid>? selectedGroups = null, Guid? brandId = null)
         {
-            ViewBag.Groups = await _productRepository.GetProductGroupsAsync(false, cancellationToken);
+            ViewBag.Groups = await _productRepository.GetProductGroupsAsync(false);
             ViewBag.productTitle = title;
 
             ViewBag.pageId = pageId;
@@ -160,7 +167,7 @@ namespace Pezeshkafzar_v2.Controllers
             List<Products> list = new List<Products>();
             int take = 12;
             int skip = (pageId - 1) * take;
-            list.AddRange(await _productRepository.GetProductListAsync(take, skip, title, minPrice, maxPrice, selectedGroups, brandId, cancellationToken));
+            list.AddRange(await _productRepository.GetProductListAsync(take, skip, title, minPrice, maxPrice, selectedGroups, brandId));
 
             if (list.Any())
             {
@@ -169,7 +176,7 @@ namespace Pezeshkafzar_v2.Controllers
             }
             else
             {
-                var productsMinMaxPrice = await _productRepository.GetMinMaxPriceOfAllProducts(cancellationToken);
+                var productsMinMaxPrice = await _productRepository.GetMinMaxPriceOfAllProducts();
                 ViewBag.minPrice = productsMinMaxPrice["minPrice"];
                 ViewBag.maxPrice = productsMinMaxPrice["maxPrice"];
             }
@@ -184,27 +191,27 @@ namespace Pezeshkafzar_v2.Controllers
             return View(list.OrderByDescending(p => p.CreateDate).Skip(skip).Take(take).ToList());
         }
 
-        public async Task<IActionResult> RelatedProducts(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> RelatedProducts(Guid id)
         {
-            return PartialView(await _productRepository.GetRelatedProductsAsync(id, 6, cancellationToken));
+            return PartialView(await _productRepository.GetRelatedProductsAsync(id, 6));
         }
 
 
-        public async Task<IActionResult> ShowBrand(CancellationToken cancellationToken)
+        public async Task<IActionResult> ShowBrand()
         {
-            return PartialView(await _productRepository.GetAllBrandsAsync(cancellationToken));
+            return PartialView(await _brandRepository.GetAllBrandsAsync());
         }
 
         [Route("ShowAllBrands")]
-        public async Task<IActionResult> ShowAllBrands(CancellationToken cancellationToken)
+        public async Task<IActionResult> ShowAllBrands()
         {
-            return View(await _productRepository.GetAllBrandsAsync(cancellationToken));
+            return View(await _brandRepository.GetAllBrandsAsync());
         }
 
         [Route("Product/QuickView/{id}")]
-        public async Task<IActionResult> QuickView(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> QuickView(Guid id)
         {
-            return PartialView(await _productRepository.FindAsync(id, cancellationToken));
+            return PartialView(await _productRepository.FindAsync(id));
         }
 
         //public ActionResult SpecialProducts()
@@ -212,14 +219,14 @@ namespace Pezeshkafzar_v2.Controllers
         //    return PartialView(db.SpecialProducts.Where(sp => sp.ExpireDate > DateTime.Now && sp.CreateDate < DateTime.Now && sp.IsActive));
         //}
 
-        public async Task<IActionResult> BestSellings(CancellationToken cancellationToken)
+        public async Task<IActionResult> BestSellings()
         {
-            return PartialView(await _productRepository.GetBestSellingsProductsAsync(cancellationToken));
+            return PartialView(await _productRepository.GetBestSellingsProductsAsync());
         }
 
-        public async Task<IActionResult> BestSellingsInBlog(CancellationToken cancellationToken)
+        public async Task<IActionResult> BestSellingsInBlog()
         {
-            var products = (await _productRepository.GetBestSellingsProductsAsync(cancellationToken))
+            var products = (await _productRepository.GetBestSellingsProductsAsync())
                 .Select(p => new BestSellingsInBlog { ProductID = p.Id, Title = p.Title, SefUrl = p.SefUrl, Image = p.ImageName, Price = p.Price, PriceAfterDiscount = p.PriceAfterDiscount, Date = p.CreateDate })
                 .OrderByDescending(p => p.Date).Take(5);
             return PartialView(products);
@@ -231,22 +238,22 @@ namespace Pezeshkafzar_v2.Controllers
             return View();
         }
 
-        public async Task<IActionResult> CategoriesPartial(Guid? parentId, Guid? groupId, CancellationToken cancellationToken)
+        public async Task<IActionResult> CategoriesPartial(Guid? parentId, Guid? groupId)
         {
-            var cats = await _productRepository.GetProductGroupsAsync(true, cancellationToken);
-            var products = await _productRepository.GetProductSelectedGroupsAsync(parentId.Value, cancellationToken);
+            var cats = await _productRepository.GetProductGroupsAsync(true);
+            var products = await _productRepository.GetProductSelectedGroupsAsync(parentId.Value);
             //var products = db.Product_Selected_Groups.Where(p => p.GroupID == parentId).Select(p => p.Products).Where(p => p.IsActive && p.IsAcceptedByAdmin).OrderByDescending(p => p.CreateDate).Take(12).ToList();
             if (groupId != null && parentId == null)
             {
-                cats = await _productRepository.GetProductGroupsAsync(null, groupId.Value, cancellationToken);
+                cats = await _productRepository.GetProductGroupsAsync(null, groupId.Value);
             }
             else if (groupId == null && parentId != null)
             {
-                cats = await _productRepository.GetProductGroupsAsync(parentId.Value, null, cancellationToken);
+                cats = await _productRepository.GetProductGroupsAsync(parentId.Value, null);
             }
             else if (groupId != null && parentId != null)
             {
-                cats = await _productRepository.GetProductGroupsAsync(parentId.Value, groupId.Value, cancellationToken);
+                cats = await _productRepository.GetProductGroupsAsync(parentId.Value, groupId.Value);
             }
             ViewBag.Products = products;
             ViewBag.ParentId = parentId;

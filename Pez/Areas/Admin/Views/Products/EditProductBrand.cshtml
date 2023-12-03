@@ -1,0 +1,27 @@
+﻿@model DataLayer.Models.Products
+
+<div id="EditBrand">
+    <form method="post" action="/admin/products/EditProductBrand/@Model.Id">
+        <input type="hidden" name="ProductID" value="@Model.Id" id="pid" />
+        <input type="hidden" name="PBID" value="@Model.ProductBrand.Single(p=>p.ProductID==Model.Id).Id" />
+        <div dir="rtl">
+            <label>برند محصول</label>
+            <select name="BrandID">
+                <option>برند</option>
+                @{
+                    List<DataLayer.Models.Brands> list = ViewBag.Brands;
+                }
+                @foreach (var item in list)
+                {
+                    <option value="@item.Id">@item.BrandTitle</option>
+                }
+            </select>
+            <div>
+                برند مورد نظر خود را پیدا نکردید؟<a href="/admin/products/brands" class="btn btn-outline-info">افزودن برند جدید</a>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="ثبت" class="btn btn-outline-success" />
+        </div>
+    </form>
+</div>

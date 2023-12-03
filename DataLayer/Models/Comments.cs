@@ -1,9 +1,9 @@
 namespace DataLayer.Models
 {
-    using DataLayer.Models;
+    using DataLayer.Models.Base;
     using System;
 
-    public partial class Comments : BaseEntity
+    public partial class Comments : GuidAuditableAggregateRoot
     {
         public Guid? ProductID { get; set; }
         public string Name { get; set; }
@@ -15,5 +15,20 @@ namespace DataLayer.Models
 
         public virtual Blogs Blogs { get; set; }
         public virtual Products Products { get; set; }
+
+        protected override void EnsureReadyState(object @event)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void EnsureValidState()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void When(object @event)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

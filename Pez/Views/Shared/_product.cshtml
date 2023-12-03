@@ -17,7 +17,7 @@
 
 <div class="product product-2" data-price="@Model.PriceAfterDiscount" data-discount="@discount" data-date="@Model.CreateDate.ToString()">
     <figure class="product-media">
-        <a href="/ShowProduct/@Model.Id/@Model.SefUrl" class="shpl">
+        <a href="/product/@Model.Id/@Model.SefUrl" class="shpl">
             <img data-src="/Images/ProductImages/Thumb/@Model.ImageName" alt="@Model.Title" title="@Model.Title"
                  class="product-image @(Context.Request.Path=="/"||Context.Request.Path.Value.Contains("ShowProduct")?"owl-lazy":"lazy")">
         </a>
@@ -104,12 +104,12 @@
                 @Model.Product_Selected_Groups.Single(g => g.Product_Groups.ParentID == null).Product_Groups.GroupTitle
             </a>
             <span>،</span>
-            <a href="/archive?selectedGroups=@Model.Product_Selected_Groups.Where(p => p.Id == Model.Id).Last().Product_Groups.Id" class="shpl">
-                @Model.Product_Selected_Groups.Where(p => p.Id == Model.Id).Last().Product_Groups.GroupTitle
+            <a href="/archive?selectedGroups=@Model.Product_Selected_Groups.Last().Product_Groups.Id" class="shpl">
+                @Model.Product_Selected_Groups.Last().Product_Groups.GroupTitle
             </a>
         </div><!-- End .product-cat -->
         <h3 class="product-title">
-            <a href="/ShowProduct/@Model.Id/@Model.SefUrl" class="shpl">
+            <a href="/product/@Model.Id/@Model.SefUrl" class="shpl">
                 @Model.Title
             </a>
         </h3><!-- End .product-title -->

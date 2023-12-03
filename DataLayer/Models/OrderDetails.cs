@@ -1,9 +1,9 @@
-using DataLayer.Models;
+using DataLayer.Models.Base;
 
 namespace DataLayer.Models
 {
 
-    public partial class OrderDetails : BaseEntity
+    public partial class OrderDetails : GuidAuditableEntity
     {
         public Guid OrderID { get; set; }
         public Guid ProductID { get; set; }
@@ -14,5 +14,20 @@ namespace DataLayer.Models
     
         public virtual Orders Orders { get; set; }
         public virtual Products Products { get; set; }
+
+        protected override void EnsureReadyState(object @event)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void EnsureValidState()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void When(object @event)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

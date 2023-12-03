@@ -15,16 +15,16 @@ namespace Pezeshkafzar_v2.Services
             _contactForms = context.Set<ContactForm>();
         }
 
-        public async Task<List<ContactForm>> GetFaqsAsync(CancellationToken cancellationToken)
-            => await _contactForms.Where(x => x.IsFaq).ToListAsync(cancellationToken);
+        public async Task<List<ContactForm>> GetFaqsAsync( )
+            => await _contactForms.Where(x => x.IsFaq).ToListAsync();
 
-        public async Task<Page> GetPageDetailAsync(int pageKey, CancellationToken cancellationToken)
-            => await Entities.FirstOrDefaultAsync(x => x.PageKey == pageKey, cancellationToken);
+        public async Task<Page> GetPageDetailAsync(int pageKey)
+            => await Entities.FirstOrDefaultAsync(x => x.PageKey == pageKey);
 
-        public async Task<List<Slider>> GetSliderListAsync(CancellationToken cancellationToken)
+        public async Task<List<Slider>> GetSliderListAsync( )
         {
             DateTime dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
-            return await _slider.Where(s => s.IsActive && s.StartDate <= dt && s.EndDate >= dt).OrderByDescending(s => s.StartDate).ToListAsync(cancellationToken);
+            return await _slider.Where(s => s.IsActive && s.StartDate <= dt && s.EndDate >= dt).OrderByDescending(s => s.StartDate).ToListAsync();
         }
     }
 }

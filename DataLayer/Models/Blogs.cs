@@ -1,8 +1,9 @@
 namespace DataLayer.Models
 {
     using System.Collections.Generic;
+    using DataLayer.Models.Base;
 
-    public partial class Blogs: BaseEntity
+    public partial class Blogs: GuidAuditableAggregateRoot
     {
         public string Title { get; set; }
         public string ShortDescription { get; set; }
@@ -15,5 +16,7 @@ namespace DataLayer.Models
         public string SefUrl { get; set; }
     
         public virtual ICollection<Comments> Comments { get; set; } = new HashSet<Comments>();
+
+        
     }
 }

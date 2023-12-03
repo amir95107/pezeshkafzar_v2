@@ -1,6 +1,6 @@
 namespace DataLayer.Models
 {
-    using DataLayer.Models;
+    using DataLayer.Models.Base;
     using System;
     using System.Collections.Generic;
 

@@ -13,13 +13,13 @@ namespace Pezeshkafzar_v2.Services
             _userRepository = userRepository;
         }
 
-        public async Task<Discounts> VerifyDisountCodeAsync(string discountCode, string mobile, CancellationToken cancellationToken)
+        public async Task<Discounts> VerifyDisountCodeAsync(string discountCode, string mobile)
         {
-            var user = await _userRepository.GetUserAsync(mobile, cancellationToken);
+            var user = await _userRepository.GetUserAsync(mobile);
             if (user == null)
                 throw new Exception("کاربر یافت نشد.");
 
-            var discount = await Entities.FirstOrDefaultAsync(x => !x.IsUsed && x.UserID == user.Id && x.DiscountCode == discountCode && x.ExpireDate > DateTime.Now);
+            var discount = await Entities.FirstOrDefaultAsync(x => !x.IsUsed && x.UserId == user.Id && x.DiscountCode == discountCode && x.ExpireDate > DateTime.Now);
             if (discount == null)
                 throw new Exception("کد تخفیف وجود ندارد یا قابل استفاده نیست.");
 
