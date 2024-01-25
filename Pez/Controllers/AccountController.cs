@@ -15,7 +15,7 @@ namespace Pezeshkafzar_v2.Controllers
 {
     public class AccountController : ControllerBase
     {
-        private Guid CurrentUserId;
+        private Guid CurrentUserId
         private readonly IUserRepository _userRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly ISession _session;
