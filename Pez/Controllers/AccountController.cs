@@ -36,6 +36,12 @@ namespace Pezeshkafzar_v2.Controllers
             CurrentUserId = accessor.HttpContext.User.Identity.IsAuthenticated ? Guid.Parse(accessor.HttpContext.User.Claims.FirstOrDefault().Value) : Guid.Empty;
         }
 
+        public IActionResult AccessDenied()
+        {
+            TempData["Title"] = "Access denied";
+            return View();
+        }
+
         [Authorize]
         public async Task<IActionResult> Index()
         {
@@ -121,7 +127,7 @@ namespace Pezeshkafzar_v2.Controllers
                 //}
 
 
-                if (!await _userRepository.IsUserExistAsync(register["Mobile"]))
+                if (await _userManager.FindByNameAsync(register["Mobile"]) == null)
                 {
                     Random rnd = new Random();
                     int num = rnd.Next(100, 100000);
@@ -133,20 +139,20 @@ namespace Pezeshkafzar_v2.Controllers
                     {
                         //_logger.LogInformation("User created a new account with password.");
 
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                        var callbackUrl = Url.Page(
-                            "/Account/ConfirmEmail",
-                            pageHandler: null,
-                            values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                            protocol: Request.Scheme);
+                        //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                        //var callbackUrl = Url.Page(
+                        //    "/Account/ConfirmEmail",
+                        //    pageHandler: null,
+                        //    values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                        //    protocol: Request.Scheme);
 
                         //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                         //send verivication code
-                        //var verifyCode = SendSMS.SendVerificationCode(register["Mobile"]);
-                        string[] verifyCode = new string[] { "123456", "ارسال موفق بود" };
+                        var verifyCode = SendSMS.SendOtp(register["Mobile"]);
+                        //string[] verifyCode = new string[] { "123456", "ارسال موفق بود" };
                         _session.SetString($"OTP_{register["Mobile"]}", verifyCode[0]);
 
                         if (verifyCode[1].Contains("ارسال موفق بود"))
@@ -290,7 +296,7 @@ namespace Pezeshkafzar_v2.Controllers
             if (ModelState.IsValid)
             {
                 ReturnUrl ??= Url.Content("~/");
-                
+
                 var result = await _signInManager.PasswordSignInAsync(userLogin.Mobile, userLogin.Password, userLogin.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
@@ -318,72 +324,59 @@ namespace Pezeshkafzar_v2.Controllers
             return View(userLogin);
         }
 
-        //[AllowAnonymous]
-        //public ActionResult UserLoginWithCode()
-        //{
-        //    if (User.Identity.IsAuthenticated)
-        //    {
-        //        return Redirect("/");
-        //    }
-        //    return View();
-        //}
+        [Route("login/otp")]
+        public async Task<IActionResult> UserLoginWithCode()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return Redirect("/");
+            }
+            return View();
+        }
 
 
-        //[AllowAnonymous]
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult UserLoginWithCode(string mobile, string ReturnUrl)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (mobile.Length != 11 || mobile.Substring(0, 2) != "09")
-        //        {
-        //            TempData["LoginError"] = "فرمت شماره موبایل اشتباه وارد شده است .";
-        //            return View();
-        //        }
-        //        Users user = db.Users.FirstOrDefault(u => u.Mobile == mobile);
-        //        if (user == null)
-        //        {
-        //            TempData["LoginError"] = "شما هنوز ثبت نام نکرده اید.";
-        //            return View(user);
-        //        }
-        //        else
-        //        {
-        //            if ((bool)user.IsMobileConfirmed)
-        //            {
+        [HttpPost]
+        [Route("login/otp")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UserLoginWithCode(IFormCollection Input, string ReturnUrl)
+        {
+            var userLogin = new UserLoginWithMobileViewModel
+            {
+                Mobile = Input["Mobile"]
+            };
+            if (!userLogin.Mobile.IsValidMobile())
+            {
+                TempData["LoginError"] = "فرمت شماره موبایل اشتباه وارد شده است .";
+                return View();
+            }
+            Users user = await _userManager.FindByNameAsync(userLogin.Mobile);
+            if (user == null)
+            {
+                TempData["LoginError"] = "شما هنوز ثبت نام نکرده اید.";
+                return View(user);
+            }
+            else
+            {
+                string name = user.UserName;
+                if (name == null)
+                {
+                    name = "کاربر";
+                }
+                string[] verify = SendSMS.SendOtp(userLogin.Mobile);
+                //string[] verifyCode = new string[] { "123456", "ارسال موفق بود" };
 
-        //                string name = user.UserName;
-        //                if (name == null)
-        //                {
-        //                    name = "کاربر";
-        //                }
-        //                string[] verify = SendSMS.SendLoginVerificationCode(mobile, name);
-        //                //string[] verifyCode = new string[] { "123456", "ارسال موفق بود" };
-
-        //                if (verify[1].Contains("ارسال موفق بود"))
-        //                {
-        //                    Session["VerifyCode"] = verify[0];
-        //                    Session.Timeout = 2;
-        //                    return View("SuccessVerifyCode", user);
-        //                }
-        //                else
-        //                {
-        //                    TempData["LoginError"] = "خطایی در ارسال پیامک رخ داده. لطفا از روشی دیگر برای ورود استفاده کنید و یا بعدا تلاش کنید..";
-        //                    return View(user);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                TempData["NoVerifyError"] = "شماره موبایل شما هنوز تایید نشده است.";
-        //                return View(user);
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return View(mobile);
-        //    }
-        //}
+                if (verify[1].Contains("ارسال موفق بود"))
+                {
+                    _session.SetString($"OTP_{user.Id}", verify[0]);
+                    return View("SuccessVerifyCode", user);
+                }
+                else
+                {
+                    TempData["LoginError"] = "خطایی در ارسال پیامک رخ داده. لطفا از روشی دیگر برای ورود استفاده کنید و یا بعدا تلاش کنید..";
+                    return View(user);
+                }
+            }
+        }
 
         //public ActionResult ResendRegisterVerificationCode(string mobile)
         //{
@@ -446,23 +439,23 @@ namespace Pezeshkafzar_v2.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> VerifyCode(string code, string Mobile, string referPage)
+        public async Task<IActionResult> VerifyCode(string code, string PhoneNumber, string referPage)
         {
             var refer = referPage.ToLower().Contains("register");
             var goTo = refer ? "SuccessVerifyRegister" : "SuccessVerifyCode";
             if (ModelState.IsValid)
             {
-                var user = await _userRepository.GetUserAsync(Mobile);
-                var theCode = _session.GetString($"VerifyCode_{Mobile}");
+                var user = await _userManager.FindByNameAsync(PhoneNumber);
+                var theCode = _session.GetString($"OTP_{user.Id}");
                 if (theCode == null)
                 {
                     TempData["VerifyError"] = "کد تایید وارد شده صحیح نمیباشد.";
-                    return View("ResendLoginVerificationCode", Mobile);
+                    return View("ResendLoginVerificationCode", PhoneNumber);
                 }
                 if (theCode.ToString() == code)
                 {
-                    _session.Remove($"VerifyCode_{Mobile}");
-                    
+                    _session.Remove($"VerifyCode_{PhoneNumber}");
+
                     if (referPage.ToLower() == "register")
                     {
                         TempData["SuccessRegister"] = "ثبت نام شما با موفقیت انجام شد";
@@ -471,8 +464,8 @@ namespace Pezeshkafzar_v2.Controllers
                     else
                     {
                         //FormsAuthentication.SetAuthCookie(Mobile, true);
-                        
-                        await _signInManager.SignInAsync(user,true);
+
+                        await _signInManager.SignInAsync(user, true);
                         if (_session.GetString("ShopCart") != null)
                         {
                             return RedirectToAction("Index", "ShopCart");
@@ -530,11 +523,11 @@ namespace Pezeshkafzar_v2.Controllers
         //    return View();
         //}
 
-        //public ActionResult LogOff()
-        //{
-        //    FormsAuthentication.SignOut();
-        //    return Redirect("/");
-        //}
+        public async Task<IActionResult> LogOff()
+        {
+            await _signInManager.SignOutAsync();
+            return Redirect("/");
+        }
 
         //[Route("ForgotPassword")]
         //public ActionResult ForgotPassword()
@@ -637,8 +630,8 @@ namespace Pezeshkafzar_v2.Controllers
             user.UserInfo.Add(userInfo1);
             _userRepository.Modify(user);
             await _userRepository.SaveChangesAsync();
-            
-            var rq = HttpContext.Request.Query["previousUrl"];
+
+            var rq = HttpContext.Request.Query["ReturnUrl"];
             if (ReturnUrl != null)
             {
                 return Redirect(ReturnUrl);

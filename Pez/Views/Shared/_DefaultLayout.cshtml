@@ -12,7 +12,7 @@
     <!-- og meta tags -->
     <meta property="og:locale" content="fa_ir" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="~/images/logo/main-logo_180_67.png" />
+    <meta property="og:image" content="~/images/logo/main.png" />
     <meta property="og:url" content="@Context.Request.Path" />
     <meta property="og:title" content="@ViewBag.Title" />
     <meta property="og:description" content="@ViewBag.Description" />
@@ -20,9 +20,9 @@
     <meta name="robots" content="index, follow" />
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="256x256" href="~/images/logo/logo-min-256x256.png">
-    <link rel="icon" type="image/x-icon" sizes="16x16" href="~/images/logo/favicon_16_16.png">
-    <link rel="mask-icon" href="~/images/logo/main-logo_180_67.png" color="#666666">
-    <link rel="shortcut icon" href="~/images/logo/favicon_16_16.png">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="~/images/logo/favicon_50_50.png">
+    <link rel="mask-icon" href="~/images/logo/main.png" color="#666666">
+    <link rel="shortcut icon" href="~/images/logo/favicon_50_50.png">
     <meta name="apple-mobile-web-app-title" content="Pezeshk Afzar">
     <meta name="application-name" content="Pezeshk Afzar">
     <meta name="msapplication-TileColor" content="#58b68c">
@@ -66,7 +66,7 @@
         <div class="pre-loader-inner">
             <div class="">
                 <div>
-                    <img src="~/images/logo/main-logo_180_67.webp" />
+                    <img src="~/images/logo/main.webp" />
                 </div>
                 <svg xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink" style="margin: auto; background: rgba(0, 0, 0, 0) none repeat scroll 0% 0%; display: block; shape-rendering: auto;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
                     <rect x="17.5" y="30" width="15" height="40" fill="#00b58c">
@@ -90,8 +90,8 @@
     <div class="overlayer" id="overlayer"></div>
     <div class="overlayer" id="overlayerInMobile"></div>
     <div class="page-wrapper">
-        @* @await Html.PartialAsync("Header",) *@
-        <partial name="Header" />
+        @await Html.PartialAsync("Header")
+        @* <partial name="Header" /> *@
         <partial name="BottomMenu" />
         @RenderBody()
         <!-- End .main -->
@@ -100,15 +100,15 @@
     </div><!-- End .page-wrapper -->
     @*<a id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></a>*@
     @*<div title="call" id="call">
-            <a href="tel:09301407490" class="text-center w-100">
-                <i class="icon-phone"></i>
-            </a>
-        </div>
-        <div title="whatsapp" id="whatsapp">
-            <a href="https://wa.me/989301407490" class="text-center w-100">
-                <i class="icon-whatsapp"></i>
-            </a>
-        </div>*@
+    <a href="tel:09301407490" class="text-center w-100">
+    <i class="icon-phone"></i>
+    </a>
+    </div>
+    <div title="whatsapp" id="whatsapp">
+    <a href="https://wa.me/989301407490" class="text-center w-100">
+    <i class="icon-whatsapp"></i>
+    </a>
+    </div>*@
     <!-- Mobile Menu -->
     <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
 
@@ -195,7 +195,7 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
-                    <img src="~/images/logo/main-logo_180_67.png" class="m-auto" title="logo" alt="logo" />
+                    <img src="~/images/logo/main.png" class="m-auto" title="logo" alt="logo" />
                     <button type="button" class="text-dark" onclick="$('#signin-modal').modal('hide')" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center p-3" style="min-height: 50px">
@@ -304,6 +304,14 @@
             .in-mobile-flex {
                 display: flex !important
             }
+
+            .logo > img {
+                max-width: 75px !important
+            }
+
+            .header-3 .header-middle {
+                padding: 45px 0 !important
+            }
         }
 
         @@media(min-width: 768px) {
@@ -330,14 +338,14 @@
     <!-- Main JS File -->
     <script src="~/vendor/lazyload/jquery.lazy.min.js"></script>
     <script>
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('./sw.js');
-                });
-            }
-        </script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js');
+            });
+        }
+    </script>
     @RenderSection("Scripts", false)
-    <script src="~/js/main.min.js?v=202108261302"></script>
+    <script src="~/js/main.js?v=202108261302"></script>
     <script src="~/js/demos/demo-3.js"></script>
     <!---start GOFTINO code--->
     <script type="text/javascript">
@@ -432,25 +440,25 @@
 
     <!---end GOFTINO code--->
     @*<script src="/js/push.min.js"></script>
-        <script>
-            $(() => {
-                Push.Permission.request(onGranted, onDenied);
-            })
+    <script>
+    $(() => {
+    Push.Permission.request(onGranted, onDenied);
+    })
 
-            onGranted = () => {
-                Push.create("Hello world!", {
-                    body: "How's it hangin'?",
-                    icon: '/images/logo/favicon_16_16.png',
-                    timeout: 10000,
-                    onClick: function () {
-                        window.focus();
-                        this.close();
-                    }
-                });
-            }
+    onGranted = () => {
+    Push.create("Hello world!", {
+    body: "How's it hangin'?",
+    icon: '/images/logo/favicon_50_50.png',
+    timeout: 10000,
+    onClick: function () {
+    window.focus();
+    this.close();
+    }
+    });
+    }
 
-            onDenied = () => { console.log("not ok") }
-        </script>*@
+    onDenied = () => { console.log("not ok") }
+    </script>*@
 </body>
 
 </html>

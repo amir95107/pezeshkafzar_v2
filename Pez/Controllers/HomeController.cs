@@ -33,13 +33,13 @@ namespace Pezeshkafzar_v2.Controllers
 
 
 
-        public async Task<IActionResult> ShowGroups( )
+        public async Task<IActionResult> ShowGroups()
         {
             return PartialView(await _productRepository.GetProductGroupsAsync(false));
         }
 
         // GET: Home
-        public async Task<IActionResult> Index( )
+        public async Task<IActionResult> Index()
         {
             var bList = await _brandRepository.GetAllBrandsAsync();
             ViewBag.Brands = bList;
@@ -47,7 +47,7 @@ namespace Pezeshkafzar_v2.Controllers
         }
 
         [Route("AboutUs")]
-        public async Task<IActionResult> AboutUs( )
+        public async Task<IActionResult> AboutUs()
         {
             Page data = await _homeRepository.GetPageDetailAsync(2);
             ViewBag.PageTitle = data.PageTitle;
@@ -58,7 +58,7 @@ namespace Pezeshkafzar_v2.Controllers
         }
 
         [Route("ContactUs")]
-        public async Task<IActionResult> ContactUs( )
+        public async Task<IActionResult> ContactUs()
         {
             Page data = await _homeRepository.GetPageDetailAsync(1);
             ViewBag.PageTitle = data.PageTitle;

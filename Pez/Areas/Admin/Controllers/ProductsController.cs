@@ -15,7 +15,7 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
 {
     [Area("admin")]
     //[Route("products")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public class ProductsController : Controller
     {
         private readonly IProductRepository _productRepository;
@@ -242,7 +242,8 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
                 products.LastUpdated = DateTime.Now;
 
                 var inputTags = input["Tags"].ToString().Split(',');
-                if (inputTags != products.Product_Tags.Select(x => x.Tag).ToArray())
+                //if (inputTags != products.Product_Tags.Select(x => x.Tag).ToArray())
+                if (CompareArrays(inputTags, products.Product_Tags.Select(x => x.Tag).ToArray()))
                 {
                     if (inputTags.Length == 1 && inputTags.All(x => string.IsNullOrWhiteSpace(x)))
                     {
@@ -277,11 +278,16 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
                 await _productRepository.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+        }
 
-            ViewBag.SelectedGroups = selectedGroups;
-            ViewBag.Groups = await _productRepository.GetProductGroupsAsync(false);
-            ViewBag.Tags = tags;
-            return View(products);
+        private bool CompareArrays(string[] arr1, string[] arr2)
+        {
+            foreach (var item in arr1)
+            {
+                if (!arr2.Contains(item))
+                    return true;
+            }
+            return false;
         }
 
         public async Task<IActionResult> SearchInTags(string tag)
@@ -510,10 +516,10 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
 
             await _productRepository.AddProductBrandAsync(new ProductBrand
             {
-                ProductID=brand.ProductID,
-                BrandID=brand.BrandID
+                ProductID = brand.ProductID,
+                BrandID = brand.BrandID
             });
-            
+
             try
             {
                 await _productRepository.SaveChangesAsync();
@@ -549,34 +555,31 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
 
         #endregion
 
-        //public Task<IActionResult> SpecialProducts()
-        //{
-        //    ViewBag.Sellers = db.Sellers.ToList();
-        //    return View(db.SpecialProducts);
-        //}
+        public async Task<IActionResult> SpecialProducts()
+        {
+            return View(await _productRepository.GetSpecialProductsAsync(true));
+        }
 
-        //public Task<IActionResult> CreateSpecialProduct()
-        //{
-        //    ViewBag.Products = db.Products.Where(p => p.Stock > 0 && p.IsActive == true).ToList();
+        public async Task<IActionResult> CreateSpecialProduct()
+        {
+            ViewBag.Products = await _productRepository.GetAllProductsAsync();
+            return View();
+        }
 
-        //    return View();
-        //}
+        [HttpPost]
+        public async Task<IActionResult> CreateSpecialProduct(SpecialProducts sp)
+        {
+            await _productRepository.AddSpecialProductAsync(sp);
+            await _productRepository.SaveChangesAsync();
+            return RedirectToAction("SpecialProducts", await _productRepository.GetSpecialProductsAsync(true));
+        }
 
-        //[HttpPost]
-        //public Task<IActionResult> CreateSpecialProduct(SpecialProducts sp)
-        //{
-        //    db.SpecialProducts.Add(sp);
-        //    db.SaveChanges();
-        //    return RedirectToAction("SpecialProducts", db.SpecialProducts.ToList());
-        //}
-
-        //public Task<IActionResult> DeleteSepcialProduct(int id)
-        //{
-        //    var sp = db.SpecialProducts.Find(id);
-        //    db.SpecialProducts.Remove(sp);
-        //    db.SaveChanges();
-        //    return RedirectToAction("SpecialProducts", db.SpecialProducts);
-        //}
+        public async Task<IActionResult> DeleteSepcialProduct(Guid id)
+        {
+            await _productRepository.RemoveSpecialProductAsync(id);
+            await _productRepository.SaveChangesAsync();
+            return RedirectToAction("SpecialProducts", await _productRepository.GetSpecialProductsAsync(true));
+        }
 
         //public Task<IActionResult> AcceptProducts()
         //{
@@ -601,21 +604,25 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
         //    return RedirectToAction("AcceptProducts", products);
         //}
 
-        //public Task<IActionResult> DeactiveProduct(int id)
-        //{
-        //    db.Products.Find(id).IsActive = false;
-        //    db.SaveChanges();
+        public async Task<IActionResult> DeactiveProduct(Guid id)
+        {
+            var product = await _productRepository.FindAsync(id);
+            product.IsActive = false;
+            _productRepository.Modify(product);
+            await _productRepository.SaveChangesAsync();
 
-        //    return PartialView("ProductsList", db.Products.ToList());
-        //}
+            return PartialView("ProductsList", await _productRepository.GetAllProductsAsync());
+        }
 
-        //public Task<IActionResult> ActivateProduct(int id)
-        //{
-        //    db.Products.Find(id).IsActive = true;
-        //    db.SaveChanges();
+        public async Task<IActionResult> ActivateProduct(Guid id)
+        {
+            var product = await _productRepository.FindAsync(id);
+            product.IsActive = true;
+            _productRepository.Modify(product);
+            await _productRepository.SaveChangesAsync();
 
-        //    return PartialView("ProductsList", db.Products.OrderByDescending(o => o.CreateDate).ToList());
-        //}
+            return PartialView("ProductsList", await _productRepository.GetAllProductsAsync());
+        }
 
         //public Task<IActionResult> SortByVisit(bool acc)
         //{

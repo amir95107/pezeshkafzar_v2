@@ -47,7 +47,7 @@ namespace Microsoft.AspNetCore.Mvc.Rendering
             var actionContextAccessor = helper.ViewContext.HttpContext.RequestServices.GetRequiredService<IActionContextAccessor>();
             var httpContextAccessor = helper.ViewContext.HttpContext.RequestServices.GetRequiredService<IHttpContextAccessor>();
             var actionSelector = serviceProvider.GetRequiredService<IActionSelector>();
-            
+
             // creating new action invocation context
             var routeData = new RouteData();
             foreach (var router in helper.ViewContext.RouteData.Routers)
@@ -71,21 +71,21 @@ namespace Microsoft.AspNetCore.Mvc.Rendering
                 {
                     newHttpContext.Items.Remove(typeof(IUrlHelper));
                 }
+                if (action == "Order")
+                {
+                    var a = "";
+                }
                 newHttpContext.Response.Body = new MemoryStream();
                 var actionContext = new ActionContext(newHttpContext, routeData, actionDescriptor);
                 actionContextAccessor.ActionContext = actionContext;
                 var invoker = serviceProvider.GetRequiredService<IActionInvokerFactory>().CreateInvoker(actionContext);
                 await invoker.InvokeAsync();
-                if (action == "Header")
-                {
-                    var a = "";
-                }
+
                 newHttpContext.Response.Body.Position = 0;
-                
-                using (var reader = new StreamReader(newHttpContext.Response.Body))
-                {
-                    return new HtmlString(reader.ReadToEnd());
-                }
+
+                using var reader = new StreamReader(newHttpContext.Response.Body);
+                return new HtmlString(reader.ReadToEnd());
+
             }
             catch (Exception ex)
             {

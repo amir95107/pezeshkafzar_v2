@@ -36,7 +36,7 @@
                             }'>
                     @foreach (var item in Model)
                     {
-                        @Html.Action("_product", item)
+                         @await Html.PartialAsync("_product", item)
                     }
 
                 </div><!-- End .owl-carousel -->

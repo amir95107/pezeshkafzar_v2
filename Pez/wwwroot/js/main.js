@@ -872,7 +872,7 @@ $('#showCart a').on('click', () => {
 
 addToCart = (id) => {
     showPreloader();
-    $.get("/Api/Shop/" + id, () => {
+    $.get("/api/shop/" + id, () => {
         hidePreloader();
         $("#showCart , #showCart2,#showCart3").load("/ShopCart/ShowCart", () => {
             showCartInMobile();

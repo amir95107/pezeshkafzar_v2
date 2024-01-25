@@ -95,11 +95,11 @@
                         <a class="btn btn-warning btn-xs p-2 m-1" href="@Url.Action("Edit",new {id=item.Id})">ویرایش محصول</a>
                         @if (item.IsActive)
                         {
-                            <a href="#" class="btn btn-outline-danger btn-xs p-2 m-1" onclick="deactiveProduct(@item.Id)">غیر فعال کردن محصول</a>
+                            <a href="#" class="btn btn-outline-danger btn-xs p-2 m-1" onclick="deactiveProduct('@item.Id')">غیر فعال کردن محصول</a>
                         }
                         else
                         {
-                            <a href="#" class="btn btn-outline-success btn-xs p-2 m-1" onclick="activateProduct(@item.Id)">فعال کردن محصول</a>
+                            <a href="#" class="btn btn-outline-success btn-xs p-2 m-1" onclick="activateProduct('@item.Id')">فعال کردن محصول</a>
                         }
                         
                     </td>

@@ -100,6 +100,11 @@ namespace Pezeshkafzar_v2.Utilities
             return JsonConvert.DeserializeObject<T>(value);
         }
 
+        public static string Serilize<T>(this T value)
+        {
+            return JsonConvert.SerializeObject(value);
+        }
+
         public static bool IsValidEmail(this string strIn)
         {
             if (string.IsNullOrWhiteSpace(strIn))

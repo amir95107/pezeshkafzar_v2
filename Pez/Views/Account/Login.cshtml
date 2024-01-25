@@ -32,13 +32,13 @@
                                     </div>
                                 }
 
-                                @if(!string.IsNullOrWhiteSpace(Context.Request.Query["recovery"]))
+                                @* @if(!string.IsNullOrWhiteSpace(Context.Request.Query["recovery"]))
                                 {
                                     <div class="alert alert-success">
                                         <p>کلمه عبور شما با موفقیت تغییر کرد .</p>
                                         <p>میتوانید لاگین کنید</p>
                                     </div>
-                                }
+                                } *@
                                 <hr />
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 <div class="form-group">

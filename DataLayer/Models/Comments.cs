@@ -15,6 +15,13 @@ namespace DataLayer.Models
 
         public virtual Blogs Blogs { get; set; }
         public virtual Products Products { get; set; }
+        public virtual Comments Parent { get; set; }
+
+        public Comments()
+        {
+            Id = Guid.NewGuid();
+            CreatedAt = DateTime.Now;
+        }
 
         protected override void EnsureReadyState(object @event)
         {

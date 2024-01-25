@@ -1,12 +1,14 @@
 ﻿using DataLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Pezeshkafzar_v2.Repositories;
 using System.Net;
 
-namespace MyEshop.Areas.Admin.Controllers
+namespace Pezeshkafzar_v2.Areas.Admin.Controllers
 {
     [Area("admin")]
+    [Authorize(Roles = "admin")]
     public class FeaturesController : Controller
     {
         private readonly IFeatureRepository _featureRepository;

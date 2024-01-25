@@ -20,7 +20,9 @@ namespace Pezeshkafzar_v2.Services
         => await NotRemoved.FirstOrDefaultAsync(x=>x.Id == id);
 
         public async Task<List<Blogs>> GetBlogsAsync(int take, int skip, string q)
-        => await NotRemoved.Where(x => !string.IsNullOrWhiteSpace(q) ? x.Title.Contains(q) || x.ShortDescription.Contains(q) || x.Text.Contains(q) : true)
+        => await NotRemoved
+            .Where(x => !string.IsNullOrWhiteSpace(q) ? x.Title.Contains(q) || x.ShortDescription.Contains(q) || x.Text.Contains(q) : true)
+            .OrderByDescending(x=>x.CreatedAt)
             .Take(take)
             .Skip(skip)
             .ToListAsync(); 

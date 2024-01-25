@@ -201,7 +201,7 @@ confirmDeleteBlog = (id) => {
     var con = confirm('آیا از حذف این بلاگ مطمئنید؟');
     if (con == true) {
         $.get('/Admin/Blogs/Delete/' + id, () => {
-
+            location.reload()
         });
     }
 }

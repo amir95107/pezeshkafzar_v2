@@ -4,6 +4,7 @@ namespace Pezeshkafzar_v2.Repositories
 {
     public interface IOrderRepository : IBaseRepository<Orders,Guid>
     {
+        Task<Orders> GetWithChildrenAsync(Guid id);
         Task<List<Orders>> GetUserOrderAsync(Guid userId);
         Task<List<Orders>> GetOrdersAsync();
         Task<List<OrderDetails>> GetOrderDetailsAsync(Guid orderId);

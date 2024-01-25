@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Pezeshkafzar_v2.Repositories;
 
 namespace Pezeshkafzar_v2.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "admin")]
+
     public class HomeController : Controller
     {
         private readonly IProductRepository _productRepository;

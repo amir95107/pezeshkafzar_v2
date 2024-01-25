@@ -48,5 +48,7 @@ namespace Pezeshkafzar_v2.Services
         public void Remove(TEntity entity)
             => Entities.Remove(entity);
 
+        public Task<List<TEntity>> GetAllAsync()
+            => Entities.ToListAsync();
     }
 }

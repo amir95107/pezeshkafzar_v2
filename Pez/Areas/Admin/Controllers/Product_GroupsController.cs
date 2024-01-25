@@ -1,4 +1,5 @@
 ﻿using DataLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Pezeshkafzar_v2.Repositories;
@@ -6,6 +7,8 @@ using Pezeshkafzar_v2.Repositories;
 namespace Pezeshkafzar_v2.Areas.Admin.Controllers
 {
     [Area("admin")]
+    [Authorize(Roles = "admin")]
+
     public class Product_GroupsController : Controller
     {
         private readonly IProductRepository _productRepository;
@@ -68,7 +71,7 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
             ViewBag.ParentID = new SelectList(await _productRepository.GetProductGroupsAsync(false), "GroupID", "GroupTitle", product_Groups.ParentID);
             if (true)
             {
-                var uniqueKey = await _productRepository.GetLastGroupNumberAsync();
+                var uniqueKey = await _productRepository.GetLastGroupNumberAsync() ?? 0;
                 product_Groups.UniqueKey = uniqueKey + 1;
                 await _productRepository.AddGroupAsync(product_Groups);
                 await _productRepository.SaveChangesAsync();

@@ -5,6 +5,7 @@ namespace Pezeshkafzar_v2.Repositories
 {
     public interface IProductRepository : IBaseRepository<Products, Guid>
     {
+        Task<List<Products>> GetAllAsync(IEnumerable<Guid> ids);
         Task<Products> GetProductWithBrandAsync(Guid id);
         Task<Products> FindProductWithChildrenAsync(Guid id);
         Task<Products> GetProductWithFeaturesAsync(Guid id);
@@ -48,14 +49,19 @@ namespace Pezeshkafzar_v2.Repositories
         Task<List<Products>> GetRelatedProductsAsync(string uniqueKey);
         Task<List<Brands>> GetProductBrandsAsync(Guid productId, int take);
         Task<List<Brands>> GetProductBrandsAsync(string uniqueKey, int take);
-        Task<List<Products>> GetSpecialProductsAsync( );
+        Task<List<SpecialProducts>> GetSpecialProductsAsync(bool forPanel);
         Task<List<Products>> GetBestSellingsProductsAsync( );
         Task<Dictionary<string, decimal>> GetMinMaxPriceOfAllProducts();
         Task<List<Product_Tags>> GetTagsAsync(string tag);
-        Task<int> GetLastGroupNumberAsync();
+        Task<int?> GetLastGroupNumberAsync();
         Task<Guid?> GetGroupParentIdByKeyAsync(int value);
         Task AddProductFeature(Product_Features feature);
         void RemoveProductFeatures(Product_Features[] feature);
         Task RemoveProductFeatures(Guid[] featureIds);
+        Task AddSpecialProductAsync(SpecialProducts special);
+        void RemoveSpecialProductAsync(SpecialProducts special);
+        Task RemoveSpecialProductAsync(Guid id);
+        Task<List<Products>> GetSpecialOffersAsync();
+        Task<List<Products>> GetProductsByTagsAsync(string q);
     }
 }

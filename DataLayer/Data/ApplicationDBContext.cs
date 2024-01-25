@@ -107,31 +107,52 @@ public class ApplicationDBContext : IdentityDbContext<IdentityUser<Guid>, Identi
 
         modelBuilder.Entity<Comments>()
                     .HasOne(x => x.Products)
-                    .WithMany(x=>x.Comments)
+                    .WithMany(x => x.Comments)
                     .HasForeignKey(m => m.ProductID)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Products_Comments");
 
+        modelBuilder.Entity<Comments>()
+                    .HasOne(x => x.Parent)
+                    .WithOne()
+                    .HasForeignKey<Comments>(x => x.ParentID)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_Comments_Parent");
+
         modelBuilder.Entity<LikeProduct>()
                     .HasOne(x => x.Users)
-                    .WithMany(x=>x.LikeProduct)
+                    .WithMany(x => x.LikeProduct)
                     .HasForeignKey(m => m.UserId)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Users_LikeProduct");
 
         modelBuilder.Entity<LikeProduct>()
                     .HasOne(x => x.Products)
-                    .WithMany(x=>x.LikeProduct)
+                    .WithMany(x => x.LikeProduct)
                     .HasForeignKey(m => m.ProductID)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Products_LikeProduct");
 
         modelBuilder.Entity<OrderDetails>()
+                    .HasOne(x => x.Products)
+                    .WithMany(x => x.OrderDetails)
+                    .HasForeignKey(m => m.ProductID)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_Product_OrderDetails");
+
+        modelBuilder.Entity<OrderDetails>()
                     .HasOne(x => x.Orders)
-                    .WithMany(x=>x.OrderDetails)
+                    .WithMany(x => x.OrderDetails)
                     .HasForeignKey(m => m.OrderID)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Orders_OrderDetails");
+
+        modelBuilder.Entity<Orders>()
+                    .HasOne(x => x.Users)
+                    .WithMany(x => x.Orders)
+                    .HasForeignKey(m => m.UserId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_User_Orders");
 
         modelBuilder.Entity<Product_Features>()
                     .HasOne(x => x.Products)
@@ -142,7 +163,7 @@ public class ApplicationDBContext : IdentityDbContext<IdentityUser<Guid>, Identi
 
         modelBuilder.Entity<Product_Features>()
                     .HasOne(x => x.Features)
-                    .WithMany(x=>x.Product_Features)
+                    .WithMany(x => x.Product_Features)
                     .HasForeignKey(m => m.FeatureID)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Features_Product_Features");
@@ -156,7 +177,7 @@ public class ApplicationDBContext : IdentityDbContext<IdentityUser<Guid>, Identi
 
         modelBuilder.Entity<Product_Groups>()
                     .HasOne(x => x.Parent)
-                    .WithMany(x=>x.Children)
+                    .WithMany(x => x.Children)
                     .HasForeignKey(m => m.ParentID)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Product_Groups_Product_Groups");
@@ -170,24 +191,31 @@ public class ApplicationDBContext : IdentityDbContext<IdentityUser<Guid>, Identi
 
         modelBuilder.Entity<Product_Selected_Groups>()
                     .HasOne(x => x.Products)
-                    .WithMany(x=>x.Product_Selected_Groups)
+                    .WithMany(x => x.Product_Selected_Groups)
                     .HasForeignKey(m => m.ProductID)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Products_Product_Selected_Groups");
 
         modelBuilder.Entity<Product_Tags>()
                     .HasOne(x => x.Products)
-                    .WithMany(x=>x.Product_Tags)
+                    .WithMany(x => x.Product_Tags)
                     .HasForeignKey(m => m.ProductID)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Products_Product_Tags");
 
         modelBuilder.Entity<ProductBrand>()
                     .HasOne(x => x.Products)
-                    .WithMany(x=>x.ProductBrand)
+                    .WithMany(x => x.ProductBrand)
                     .HasForeignKey(m => m.ProductID)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Products_ProductBrand");
+
+        modelBuilder.Entity<SpecialProducts>()
+                    .HasOne(x => x.Products)
+                    .WithMany(x => x.SpecialProducts)
+                    .HasForeignKey(m => m.ProductID)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_Products_SpecialProducts");
 
         modelBuilder.Entity<ProductBrand>()
                     .HasOne(x => x.Brands)

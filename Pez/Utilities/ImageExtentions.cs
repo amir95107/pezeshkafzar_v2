@@ -10,7 +10,7 @@ namespace Pezeshkafzar_v2.Utilities
         {
             if (file != null && path != null) {
                 using (Stream fileStream = new FileStream(path, FileMode.Create))
-                {
+                {   
                     await file.CopyToAsync(fileStream);
                 }
             }
@@ -42,6 +42,7 @@ namespace Pezeshkafzar_v2.Utilities
                         postedFile.ContentType.ToLower() != "image/pjpeg" &&
                         postedFile.ContentType.ToLower() != "image/gif" &&
                         postedFile.ContentType.ToLower() != "image/x-png" &&
+                        postedFile.ContentType.ToLower() != "image/webp" &&
                         postedFile.ContentType.ToLower() != "image/png")
             {
                 return false;
@@ -53,6 +54,7 @@ namespace Pezeshkafzar_v2.Utilities
             if (Path.GetExtension(postedFile.FileName).ToLower() != ".jpg"
                 && Path.GetExtension(postedFile.FileName).ToLower() != ".png"
                 && Path.GetExtension(postedFile.FileName).ToLower() != ".gif"
+                && Path.GetExtension(postedFile.FileName).ToLower() != ".webp"
                 && Path.GetExtension(postedFile.FileName).ToLower() != ".jpeg")
             {
                 return false;
@@ -93,17 +95,17 @@ namespace Pezeshkafzar_v2.Utilities
             //  we can assume that it's not a valid image
             //-------------------------------------------
 
-            try
-            {
-                using var fileStream = postedFile.OpenReadStream();
-                using (var bitmap = new System.Drawing.Bitmap(fileStream))
-                {
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            //try
+            //{
+            //    using var fileStream = postedFile.OpenReadStream();
+            //    using (var bitmap = new System.Drawing.Bitmap(fileStream))
+            //    {
+            //    }
+            //}
+            //catch (Exception)
+            //{
+            //    return false;
+            //}
 
             return true;
         }

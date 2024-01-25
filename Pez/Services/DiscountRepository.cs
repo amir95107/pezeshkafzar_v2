@@ -13,6 +13,11 @@ namespace Pezeshkafzar_v2.Services
             _userRepository = userRepository;
         }
 
+        public async Task<List<Discounts>> GetDiscountsWithUserAsync()
+            => await Entities
+                .Include(x=>x.Users)
+                .ToListAsync();
+
         public async Task<Discounts> VerifyDisountCodeAsync(string discountCode, string mobile)
         {
             var user = await _userRepository.GetUserAsync(mobile);

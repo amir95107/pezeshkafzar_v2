@@ -36,5 +36,6 @@ namespace DataLayer.Models
         public virtual ICollection<Product_Tags> Product_Tags { get; set; } = new HashSet<Product_Tags>();
         public virtual ICollection<ProductBrand> ProductBrand { get; set; } = new HashSet<ProductBrand>();
         public virtual ICollection<Comments> Comments { get; set; } = new HashSet<Comments>();
+        public virtual ICollection<SpecialProducts> SpecialProducts { get; set; } = new HashSet<SpecialProducts>();
     }
 }

@@ -15,6 +15,12 @@ namespace DataLayer.Models
         public virtual Orders Orders { get; set; }
         public virtual Products Products { get; set; }
 
+        public OrderDetails()
+        {
+            Id= Guid.NewGuid();
+            CreatedAt = DateTime.Now;
+        }
+
         protected override void EnsureReadyState(object @event)
         {
             throw new NotImplementedException();

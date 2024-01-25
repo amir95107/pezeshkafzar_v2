@@ -19,7 +19,7 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane fade active show" id="signin-2" role="tabpanel" aria-labelledby="signin-tab-2">
-                        <form action="/account/UserLoginWithCode?ReturnUrl=@Context.Request.Query["ReturnUrl"]" method="post">
+                        <form action="/login/otp?ReturnUrl=@Context.Request.Query["ReturnUrl"]" method="post">
                             @Html.AntiForgeryToken()
 
                             <div class="form-horizontal">

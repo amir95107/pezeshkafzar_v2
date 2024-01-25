@@ -1,4 +1,4 @@
-﻿@* @model IEnumerable<DataLayer.Models.SpecialProducts>
+﻿@model IEnumerable<DataLayer.Models.SpecialProducts>
 
 @{
     ViewBag.Title = "SpecialProducts";
@@ -15,7 +15,7 @@
                 <option value="0">
                     ادمین
                 </option>
-                @{
+                @* @{
                     List<DataLayer.Sellers> sellers = ViewBag.Sellers;
                     foreach (var seller in sellers)
                     {
@@ -23,7 +23,7 @@
                             @seller.StoreName
                         </option>
                     }
-                }
+                } *@
             </select>
         </div>
 
@@ -66,10 +66,10 @@
                         @((item.IsActive)?"فعال":"غیرفعال")
                     </td>
                     <td>
-                        <a class="btn btn-outline-danger btn-sm" href="/Admin/Products/DeleteSepcialProduct/@item.SPID"><i style="color: red" class="now-ui-icons ui-1_simple-remove "></i></a>
+                        <a class="btn btn-outline-danger btn-sm" href="/Admin/Products/DeleteSepcialProduct/@item.Id"><i style="color: red" class="now-ui-icons ui-1_simple-remove "></i></a>
                     </td>
                 </tr>
             }
 
         </table>
-        </div> *@
+        </div>

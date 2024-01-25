@@ -31,7 +31,10 @@ namespace Pezeshkafzar_v2.Controllers
             => PartialView(await _productRepository.GetLastAddedProductsAsync(3));
 
         public async Task<IActionResult> SpecialOffer()
-            => PartialView(await _productRepository.GetSpecialProductsAsync());
+        {
+            var a = await _productRepository.GetSpecialOffersAsync();
+            return PartialView(a);
+        }
 
         [Route("AllOffers")]
         public async Task<IActionResult> AllOffers(int take = 16, int skip = 0)
@@ -214,14 +217,16 @@ namespace Pezeshkafzar_v2.Controllers
             return PartialView(await _productRepository.FindAsync(id));
         }
 
-        //public ActionResult SpecialProducts()
-        //{
-        //    return PartialView(db.SpecialProducts.Where(sp => sp.ExpireDate > DateTime.Now && sp.CreateDate < DateTime.Now && sp.IsActive));
-        //}
+        public async Task<IActionResult> SpecialProducts()
+        {
+            var a = await _productRepository.GetSpecialProductsAsync(false);
+            return PartialView(a);
+        }
 
         public async Task<IActionResult> BestSellings()
         {
-            return PartialView(await _productRepository.GetBestSellingsProductsAsync());
+            var a = await _productRepository.GetBestSellingsProductsAsync();
+            return PartialView(a);
         }
 
         public async Task<IActionResult> BestSellingsInBlog()

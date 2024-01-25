@@ -1,7 +1,9 @@
 using DataLayer.Data;
 using DataLayer.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Pezeshkafzar_v2.Repositories;
+using Pezeshkafzar_v2.Exceptions;
+using Pezeshkafzar_v2.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,18 +14,18 @@ var configuration = builder.Configuration;
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<Users>(options =>
-    options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDBContext>();
+//builder.Services.AddDefaultIdentity<Users>(options =>
+//    options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<ApplicationDBContext>();
 
 
 
-//builder.Services.AddIdentity<Users, IdentityRole<Guid>>(options =>
-//{
-//    options.User.RequireUniqueEmail = false;
-//})
-//        .AddEntityFrameworkStores<ApplicationDBContext>()
-//        .AddDefaultTokenProviders();
+builder.Services.AddIdentity<Users, IdentityRole<Guid>>(options =>
+{
+    options.User.RequireUniqueEmail = false;
+}).AddEntityFrameworkStores<ApplicationDBContext>();
+
+builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/login");
 
 builder.Services.AddRazorPages();
 
@@ -36,7 +38,7 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromHours(24);
 });
 
-RegisterRepositories.Handle(builder);
+RegisterServices.Handle(builder);
 
 var app = builder.Build();
 
@@ -56,6 +58,8 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.ConfigureCustomExceptionMiddleware();
 
 //app.MapAreaControllerRoute(
 //    name: "admin",

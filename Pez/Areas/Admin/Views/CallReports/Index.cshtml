@@ -1,0 +1,66 @@
+﻿@model IEnumerable<DataLayer.Models.CallReport>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_DefaultAdmin.cshtml";
+}
+
+
+<div style="height:75px"></div>
+<div class="container p-2" dir="rtl">
+
+    <h2 class="text-center p-2 border shadow m-0 mt-3 bg-white">گزارش تماس</h2>
+
+    <table class="table table-responsive table-bordered table-hover table-striped d-table dataTable bg-white">
+        <thead>
+            <tr>
+                <th>ردیف</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Username)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ip)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Operator)
+                </th>
+            </tr>
+        </thead>
+        @{ int c = 1;}
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@c</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ip)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Operator)
+                </td>
+
+            </tr>
+            c++;
+        }
+    </tbody>
+
+    </table>
+</div>
+@section Scripts{
+    <link href="~/Areas/Admin/Content/DataTables/datatables.min.css" rel="stylesheet" />
+    <script src="~/Areas/Admin/Content/DataTables/datatables.min.js"></script>
+    <script>
+        $(function () {
+            $('.dataTable').DataTable()
+        })
+    </script>
+}

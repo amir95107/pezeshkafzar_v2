@@ -16,7 +16,7 @@
 
                 @*<div class="">*@
                 <a href="/" class="logo shpl">
-                    <img src="~/images/logo/main-logo_180_67.png" alt="Pezeshkafzar Logo" title="Pezeshkafzar Logo">
+                    <img src="~/images/logo/main.png" alt="Pezeshkafzar Logo" title="Pezeshkafzar Logo">
                 </a>
                 @*</div>*@
             </div><!-- End .header-left -->
@@ -80,7 +80,7 @@
                     </div><!-- End .compare-dropdown -->
 
                 <div class="dropdown cart-dropdown in-desktop-flex d-block-product-page mr-3" id="showCart">
-                    @* @Html.ActionAsync("ShowCart", "ShopCart").Result *@
+                    @Html.Action("ShowCart", "ShopCart")
                 </div><!-- End .cart-dropdown -->
             </div><!-- End .header-right -->
         </div><!-- End .container -->
@@ -159,7 +159,7 @@
                     </p>
                 </div>
                 <div class="dropdown cart-dropdown" id="showCart2">
-                    @* @Html.ActionAsync("ShowCart", "ShopCart").Result *@
+                    @Html.Action("ShowCart", "ShopCart")
                 </div>
             </div>
         </div><!-- End .container -->

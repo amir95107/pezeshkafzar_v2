@@ -9,7 +9,7 @@ namespace DataLayer.Models
         public string TraceCode { get; set; }
         public Guid UserId { get; set; }
         public DateTime Date { get; set; }
-        public int Payable { get; set; }
+        public decimal Payable { get; set; }
         public bool IsFinaly { get; set; }
         public int PaymentWay { get; set; }
         public bool UseDiscountCode { get; set; }
@@ -20,6 +20,13 @@ namespace DataLayer.Models
         public virtual DeliveryWays DeliveryWays { get; set; }
         public virtual ICollection<OrderDetails> OrderDetails { get; set; } = new HashSet<OrderDetails>();
         public virtual Users Users { get; set; }
+
+        public Orders()
+        {
+            Id= Guid.NewGuid();
+            CreatedAt = DateTime.Now;
+            ModifiedAt = DateTime.Now;
+        }
 
         protected override void EnsureReadyState(object @event)
         {

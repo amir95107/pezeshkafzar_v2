@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
+	  <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+	  <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
@@ -20,6 +21,29 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Areas\Admin\Views\Blogs\Create.cshtml" />
+    <None Include="Areas\Admin\Views\Blogs\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Blogs\Index.cshtml" />
+    <None Include="Areas\Admin\Views\CallReports\Create.cshtml" />
+    <None Include="Areas\Admin\Views\CallReports\Delete.cshtml" />
+    <None Include="Areas\Admin\Views\CallReports\Details.cshtml" />
+    <None Include="Areas\Admin\Views\CallReports\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\CallReports\Index.cshtml" />
+    <None Include="Areas\Admin\Views\Comments\Create.cshtml" />
+    <None Include="Areas\Admin\Views\Comments\Delete.cshtml" />
+    <None Include="Areas\Admin\Views\Comments\Details.cshtml" />
+    <None Include="Areas\Admin\Views\Comments\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Comments\Index.cshtml" />
+    <None Include="Areas\Admin\Views\DeliveryWays\Create.cshtml" />
+    <None Include="Areas\Admin\Views\DeliveryWays\Delete.cshtml" />
+    <None Include="Areas\Admin\Views\DeliveryWays\Details.cshtml" />
+    <None Include="Areas\Admin\Views\DeliveryWays\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\DeliveryWays\Index.cshtml" />
+    <None Include="Areas\Admin\Views\Discounts\Create.cshtml" />
+    <None Include="Areas\Admin\Views\Discounts\Delete.cshtml" />
+    <None Include="Areas\Admin\Views\Discounts\Details.cshtml" />
+    <None Include="Areas\Admin\Views\Discounts\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Discounts\Index.cshtml" />
     <None Include="Areas\Admin\Views\Features\Create.cshtml" />
     <None Include="Areas\Admin\Views\Features\Delete.cshtml" />
     <None Include="Areas\Admin\Views\Features\Details.cshtml" />
@@ -30,6 +54,23 @@
     <None Include="Areas\Admin\Views\Home\Media.cshtml" />
     <None Include="Areas\Admin\Views\Home\MediaPartial.cshtml" />
     <None Include="Areas\Admin\Views\Home\Order.cshtml" />
+    <None Include="Areas\Admin\Views\Orders\AdminOrderList.cshtml" />
+    <None Include="Areas\Admin\Views\Orders\Create.cshtml" />
+    <None Include="Areas\Admin\Views\Orders\Delete.cshtml" />
+    <None Include="Areas\Admin\Views\Orders\Details.cshtml" />
+    <None Include="Areas\Admin\Views\Orders\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Orders\Index.cshtml" />
+    <None Include="Areas\Admin\Views\Orders\LoggedCarts.cshtml" />
+    <None Include="Areas\Admin\Views\Orders\OrderTable.cshtml" />
+    <None Include="Areas\Admin\Views\Orders\ReportOrders.cshtml" />
+    <None Include="Areas\Admin\Views\Orders\Reports.cshtml" />
+    <None Include="Areas\Admin\Views\Orders\ShowDetails.cshtml" />
+    <None Include="Areas\Admin\Views\Orders\ShowOredrDetails.cshtml" />
+    <None Include="Areas\Admin\Views\Pages\Create.cshtml" />
+    <None Include="Areas\Admin\Views\Pages\Delete.cshtml" />
+    <None Include="Areas\Admin\Views\Pages\Details.cshtml" />
+    <None Include="Areas\Admin\Views\Pages\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Pages\Index.cshtml" />
     <None Include="Areas\Admin\Views\Products\AcceptProducts.cshtml" />
     <None Include="Areas\Admin\Views\Products\AcceptProductsTable.cshtml" />
     <None Include="Areas\Admin\Views\Products\Brands.cshtml" />
@@ -55,7 +96,22 @@
     <None Include="Areas\Admin\Views\Product_Groups\VisitCountCategories.cshtml" />
     <None Include="Areas\Admin\Views\Shared\_DefaultAdmin.cshtml" />
     <None Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <None Include="Areas\Admin\Views\Sliders\Create.cshtml" />
+    <None Include="Areas\Admin\Views\Sliders\Delete.cshtml" />
+    <None Include="Areas\Admin\Views\Sliders\Details.cshtml" />
+    <None Include="Areas\Admin\Views\Sliders\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Sliders\Index.cshtml" />
     <None Include="C:\Users\am.janmohammadi\source\repos\Pezeshkafzar_v2\.editorconfig" />
+    <None Include="Views\Address\AddressesList.cshtml" />
+    <None Include="Views\Address\Create.cshtml" />
+    <None Include="Views\Address\Delete.cshtml" />
+    <None Include="Views\Address\Details.cshtml" />
+    <None Include="Views\Address\Edit.cshtml" />
+    <None Include="Views\Address\Index.cshtml" />
+    <None Include="Views\Blog\AllBlogs.cshtml" />
+    <None Include="Views\Blog\LastBlogs.cshtml" />
+    <None Include="Views\Blog\Search.cshtml" />
+    <None Include="Views\Blog\ShowBlog.cshtml" />
     <None Include="Views\Product\AllOffers.cshtml" />
     <None Include="Views\Product\ArchiveProduct.cshtml" />
     <None Include="Views\Product\BestSellings.cshtml" />
@@ -70,6 +126,19 @@
     <None Include="Views\Product\ShowBrand.cshtml" />
     <None Include="Views\Product\ShowComments.cshtml" />
     <None Include="Views\Home\ShowGroups.cshtml" />
+    <None Include="Views\Search\Index.cshtml" />
+    <None Include="Views\Search\LastSearchedProducts.cshtml" />
+    <None Include="Views\Search\MobileSearch.cshtml" />
+    <None Include="Views\Search\MobileSearchSuggestion.cshtml" />
+    <None Include="Views\Search\SearchSuggestion.cshtml" />
+    <None Include="Views\ShopCart\AccountOrders.cshtml" />
+    <None Include="Views\ShopCart\Delivery.cshtml" />
+    <None Include="Views\ShopCart\Factor.cshtml" />
+    <None Include="Views\ShopCart\Index.cshtml" />
+    <None Include="Views\ShopCart\Order.cshtml" />
+    <None Include="Views\ShopCart\OrderingLevel.cshtml" />
+    <None Include="Views\ShopCart\PayWithCardNo.cshtml" />
+    <None Include="Views\ShopCart\ShowCart.cshtml" />
     <None Include="wwwroot\admin\Content\css\bootstrap.min.css" />
     <None Include="wwwroot\admin\Content\css\bootstrap.min.css.map" />
     <None Include="wwwroot\admin\Content\css\kendo.common.min.css" />
@@ -1731,8 +1800,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" Exclude="All" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
     <PackageReference Include="Zarinpal" Version="3.0.1" />
   </ItemGroup>
 

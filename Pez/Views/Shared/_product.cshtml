@@ -40,7 +40,7 @@
             @if (hasGaranty)
             {
                 <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="این محصول شامل گارانتی میباشد">
-                    <img src="~/Content/images/icons8-warranty-48 (1).png" title="garanty" alt="garanty" width="48" height="48" />
+                    <img src="~/images/icons8-warranty-48 (1).png" title="garanty" alt="garanty" width="48" height="48" />
                 </span>
             }
         </div>
@@ -48,7 +48,7 @@
 
 
         <div class="product-action-vertical">
-            <a onclick="addToWishList(@Model.Id)" class="btn-product-icon btn-wishlist btn-expandable">
+            <a onclick="addToWishList('@Model.Id')" class="btn-product-icon btn-wishlist btn-expandable">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
                     <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
                 </svg>
@@ -57,7 +57,7 @@
                     لیست علاقه مندی
                 </span>
             </a>
-            <a onclick="quickView(@Model.Id)" class="btn-product-icon btn-expandable" title="مشاهده سریع">
+            <a onclick="quickView('@Model.Id')" class="btn-product-icon btn-expandable" title="مشاهده سریع">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eyeglasses" viewBox="0 0 16 16">
                     <path d="M4 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm2.625.547a3 3 0 0 0-5.584.953H.5a.5.5 0 0 0 0 1h.541A3 3 0 0 0 7 8a1 1 0 0 1 2 0 3 3 0 0 0 5.959.5h.541a.5.5 0 0 0 0-1h-.541a3 3 0 0 0-5.584-.953A1.993 1.993 0 0 0 8 6c-.532 0-1.016.208-1.375.547zM14 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" />
                 </svg>
@@ -68,7 +68,7 @@
         <div class="product-action product-action-dark">
             @if (Model.Stock > 0 && Model.PriceAfterDiscount > 0)
             {
-                <a onclick="addToCart(@Model.Id)" class="btn-product btn-cart" title="افزودن به سبد خرید">
+                <a onclick="addToCart('@Model.Id')" class="btn-product btn-cart" title="افزودن به سبد خرید">
 
                     <span>
                         افزودن
@@ -100,8 +100,8 @@
 
     <div class="product-body">
         <div class="product-cat">
-            <a href="/archive?selectedGroups=@Model.Product_Selected_Groups.Single(g=>g.Product_Groups.ParentID==null).Product_Groups.Id" class="shpl">
-                @Model.Product_Selected_Groups.Single(g => g.Product_Groups.ParentID == null).Product_Groups.GroupTitle
+            <a href="/archive?selectedGroups=@Model.Product_Selected_Groups.FirstOrDefault(g=>g.Product_Groups.ParentID==null)?.Product_Groups.Id" class="shpl">
+                @Model.Product_Selected_Groups.FirstOrDefault(g => g.Product_Groups.ParentID == null)?.Product_Groups.GroupTitle
             </a>
             <span>،</span>
             <a href="/archive?selectedGroups=@Model.Product_Selected_Groups.Last().Product_Groups.Id" class="shpl">
@@ -132,7 +132,7 @@
             else
             {
                 <div class="text-center w-100 btn btn-info call-for-price">
-                    <a class="btn w-100 call-for-price justify-content-center getNumber" @*href="tel:09120869780"*@ onclick="getNumber(@Model.Id)">
+                    <a class="btn w-100 call-for-price justify-content-center getNumber" @*href="tel:09120869780"*@ onclick="getNumber('@Model.Id')">
                         <span class="call-span">تماس بگیرید</span>
                         <span class="number-span">09120869780</span>
                     </a>

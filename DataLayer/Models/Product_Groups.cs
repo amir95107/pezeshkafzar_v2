@@ -6,7 +6,7 @@ namespace DataLayer.Models
 
     public partial class Product_Groups : GuidAuditableAggregateRoot
     {
-        public int UniqueKey { get; set; }
+        public int? UniqueKey { get; set; }
         public string GroupTitle { get; set; }
         public Guid? ParentID { get; set; }
         public bool IsDeleted { get; set; }

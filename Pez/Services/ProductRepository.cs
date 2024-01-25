@@ -17,6 +17,7 @@ namespace Pezeshkafzar_v2.Services
         private readonly DbSet<Product_Galleries> _productGalleries;
         private readonly DbSet<Product_Features> _productFeatures;
         private readonly DbSet<ProductBrand> _productBrands;
+        private readonly DbSet<SpecialProducts> _specialProducts;
         public ProductRepository(IHttpContextAccessor accessor, ApplicationDBContext context) : base(accessor, context)
         {
             NotRemoved = Entities.Where(x => x.RemovedAt == null);
@@ -27,6 +28,7 @@ namespace Pezeshkafzar_v2.Services
             _features = context.Set<Features>();
             _productFeatures = context.Set<Product_Features>();
             _productBrands = context.Set<ProductBrand>();
+            _specialProducts = context.Set<SpecialProducts>();
         }
 
         public async Task<List<Products>> GetAcceptedProductsAsync()
@@ -41,7 +43,10 @@ namespace Pezeshkafzar_v2.Services
                 .ToListAsync();
 
         public async Task<List<Products>> GetBestSellingsProductsAsync()
-        => await NotRemoved.Where(x => x.IsAcceptedByAdmin && x.IsInBestselling).ToListAsync();
+        => await NotRemoved
+            .Include(x => x.Product_Selected_Groups)
+            .ThenInclude(x => x.Product_Groups)
+            .Where(x => x.IsAcceptedByAdmin && x.IsInBestselling).ToListAsync();
 
 
 
@@ -69,7 +74,10 @@ namespace Pezeshkafzar_v2.Services
             .ToListAsync();
 
         public async Task<List<Products>> GetLastAddedProductsAsync(int take)
-            => await NotRemoved.OrderByDescending(x => x.CreateDate).Take(take).ToListAsync();
+            => await NotRemoved
+            .Include(x => x.Product_Selected_Groups)
+            .ThenInclude(x => x.Product_Groups)
+            .OrderByDescending(x => x.CreateDate).Take(take).ToListAsync();
 
         public async Task<List<Products>> GetLikedProductsAsync(Guid userId)
             => await Entities
@@ -138,7 +146,7 @@ namespace Pezeshkafzar_v2.Services
 
         public async Task<List<Product_Galleries>> GetProductGalleriesAsync(Guid productId)
         => await Entities
-                .Include(x => x.Product_Galleries.Where(x=>x.RemovedAt == null))
+                .Include(x => x.Product_Galleries.Where(x => x.RemovedAt == null))
                 .Where(x => x.Id == productId)
                 .SelectMany(x => x.Product_Galleries.Where(x => x.RemovedAt == null))
                 .ToListAsync();
@@ -173,6 +181,7 @@ namespace Pezeshkafzar_v2.Services
         {
             var products = NotRemoved
                 .Include(x => x.Product_Selected_Groups)
+                .ThenInclude(x => x.Product_Groups)
                 .Where(x => x.IsAcceptedByAdmin && x.IsActive);
             if (!string.IsNullOrWhiteSpace(title))
                 products = products.Where(x => x.Title.Contains(title) || x.Text.Contains(title));
@@ -189,10 +198,18 @@ namespace Pezeshkafzar_v2.Services
                     .Include(x => x.Product_Selected_Groups.Where(xx => selectedGroups.Contains(xx.GroupID)))
                     .Where(x => x.Product_Selected_Groups.Any(xx => selectedGroups.Contains(xx.GroupID)));
             }
-            return await products
+            try
+            {
+                return await products
                 .Take(take)
                 .Skip(skip)
                 .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            };
         }
 
         public async Task<int> GetProductListCountAsync(string title, decimal minPrice, decimal maxPrice, List<Guid>? selectedGroups, Guid? brandId)
@@ -264,8 +281,13 @@ namespace Pezeshkafzar_v2.Services
             return Task.FromResult(new List<Products>());
         }
 
-        public async Task<List<Products>> GetSpecialProductsAsync()
-            => await Entities.Where(x => x.IsSpecial).ToListAsync();
+        public async Task<List<SpecialProducts>> GetSpecialProductsAsync(bool forPanel)
+            => await _specialProducts
+            .Include(x => x.Products)
+            .ThenInclude(x => x.Product_Selected_Groups)
+            .ThenInclude(x => x.Product_Groups)
+            .Where(x => !forPanel ? x.IsActive && x.CreatedAt <= DateTime.Now && x.ExpireDate >= DateTime.Now : true)
+            .ToListAsync();
 
         public async Task<bool> IsProductLiked(Guid userId, Guid productId)
             => await Entities.Include(x => x.LikeProduct.Where(xx => xx.ProductID == productId && xx.UserId == userId))
@@ -348,8 +370,8 @@ namespace Pezeshkafzar_v2.Services
             => await _features
             .FirstOrDefaultAsync(x => x.Id == featureId);
 
-        public async Task<int> GetLastGroupNumberAsync()
-            => await _productGroups.Select(x => x.UniqueKey).MaxAsync();
+        public async Task<int?> GetLastGroupNumberAsync()
+            => await _productGroups.MaxAsync(x => (int?)x.UniqueKey);
 
         public async Task<Guid?> GetGroupParentIdByKeyAsync(int value)
             => await _productGroups
@@ -359,8 +381,8 @@ namespace Pezeshkafzar_v2.Services
 
         public async Task<Products> GetGalleryWithproductAsync(Guid id)
             => await Entities
-            .Include(x=>x.Product_Galleries.Where(x => x.RemovedAt == null))
-            .Where(x => x.Product_Galleries.Any(xx=>xx.Id == id))
+            .Include(x => x.Product_Galleries.Where(x => x.RemovedAt == null))
+            .Where(x => x.Product_Galleries.Any(xx => xx.Id == id))
             .FirstOrDefaultAsync();
 
         public async Task AddProductFeature(Product_Features feature)
@@ -402,5 +424,39 @@ namespace Pezeshkafzar_v2.Services
             }
             _productBrands.RemoveRange(ProductBrand.ToArray());
         }
+
+        public async Task AddSpecialProductAsync(SpecialProducts special)
+            => await _specialProducts.AddAsync(special);
+
+        public void RemoveSpecialProductAsync(SpecialProducts special)
+        => _specialProducts.Remove(special);
+
+        public async Task RemoveSpecialProductAsync(Guid id)
+        {
+            var special = await _specialProducts.FindAsync(id);
+
+            if (special is null)
+                throw new Exception("special not found");
+
+            RemoveSpecialProductAsync(special);
+        }
+
+        public async Task<List<Products>> GetAllAsync(IEnumerable<Guid> ids)
+            => await Entities
+            .Where(x => ids.Contains(x.Id))
+            .ToListAsync();
+
+        public async Task<List<Products>> GetSpecialOffersAsync()
+            => await NotRemoved
+            .Include(x => x.Product_Selected_Groups)
+            .ThenInclude(x => x.Product_Groups)
+            .Where(x => x.Price > x.PriceAfterDiscount && x.IsActive)
+            .ToListAsync();
+
+        public async Task<List<Products>> GetProductsByTagsAsync(string q)
+            => await Entities
+            .Include(x => x.Product_Tags.Where(xx => xx.Tag == q))
+            .Where(x => x.Product_Tags.Any(xx => xx.Tag == q) && x.IsAcceptedByAdmin && x.IsActive)
+            .ToListAsync();
     }
 }

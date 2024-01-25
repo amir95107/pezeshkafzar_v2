@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DataLayer.Models.Products>
+﻿@model IEnumerable<DataLayer.Models.Products> 
 
 @if (Model.Any()) { 
 <div class="row-container bg-blue pr-0 pl-0" id="SpecialOffer">
@@ -37,7 +37,9 @@
                             }'>
                     @foreach (var item in Model)
                     {
-                        @Html.Action("_product", item)
+                        @* @await Html.PartialAsync("_product", item) *@
+
+                            <partial name="~/views/Shared/_product.cshtml" for="@item" />
                     }
                 </div><!-- End .owl-carousel -->
             </div><!-- .End .tab-pane -->
