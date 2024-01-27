@@ -61,15 +61,12 @@
                         {
                             <tr>
                                 <td>
-                                    <img id="gallery-img-@item.Id" src="/Images/ProductImages/Thumb/@item.ImageName" width="150" class="thumbnail" />
+                                    <img id="gallery-img-@item.Id" src="~/Images/ProductImages/Thumb/@item.ImageName" width="150" class="thumbnail" />
                                 </td>
                                 <td>
                                     @item.Products.Title
                                 </td>
                                 <td>
-                                    <a class="btn btn-sm btn-outline-info" href="/admin/Products/SetAsMainImage?GalleryID=@item.Id&ProductID=@item.ProductID">
-                                        تصویر اصلی
-                                    </a>
                                     <a class="btn-outline-danger btn btn-sm" href="/Admin/Products/DeleteGallery/@item.Id">
                                         <i class="now-ui-icons ui-1_simple-remove"></i>
                                     </a>

@@ -159,13 +159,13 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
                 var productTags = new List<Product_Tags>();
                 if (!string.IsNullOrEmpty(tags))
                 {
-                    string[] tagList = tags.Split(',');
+                    string[] tagList = tags.Split('#');
                     foreach (string tag in tagList)
                     {
                         productTags.Add(new()
                         {
                             ProductID = products.Id,
-                            Tag = tag
+                            Tag = tag.Trim()
                         });
                     }
 
@@ -478,9 +478,10 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBrands(Brands brand, IFormFile BrandImageName)
         {
-            brand.BrandImageName = BrandImageName.FileName;
-            if (true)
+            
+            if (brand.BrandTitle != null && BrandImageName != null)
             {
+                brand.BrandImageName = BrandImageName.FileName;
                 if (BrandImageName != null && BrandImageName.IsImage())
                 {
                     brand.BrandImageName = BrandImageName.FileName.Split('.')[0] + "_" + Guid.NewGuid().ToString() + Path.GetExtension(BrandImageName.FileName);

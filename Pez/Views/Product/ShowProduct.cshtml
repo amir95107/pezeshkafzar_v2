@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = Model.Title;
     var cat = Model.Product_Selected_Groups.FirstOrDefault(g => g.Product_Groups.ParentID != null)?.Product_Groups?.GroupTitle;
-    ViewBag.Description = "خرید اینترنتی " + Model.Title + " و قیمت انواع " + cat + " از فروشگاه آنلاین پزشک افزار. بهترین قیمت های " + cat + " در فروشگاه اینترنتی پزشک افزار.";
+    ViewBag.Description = "خرید اینترنتی " + Model.Title + " و قیمت انواع " + cat + " از فروشگاه آنلاین قائم مد. بهترین قیمت های " + cat + " در فروشگاه اینترنتی قائم مد.";
     var isLiked = ViewBag.IsLiked;
     Layout = "~/Views/Shared/_DefaultLayout.cshtml";
     int stock = Model.Stock;

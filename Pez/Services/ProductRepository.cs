@@ -145,11 +145,14 @@ namespace Pezeshkafzar_v2.Services
                 .ToListAsync();
 
         public async Task<List<Product_Galleries>> GetProductGalleriesAsync(Guid productId)
-        => await Entities
+        {
+            var a = await Entities
                 .Include(x => x.Product_Galleries.Where(x => x.RemovedAt == null))
                 .Where(x => x.Id == productId)
                 .SelectMany(x => x.Product_Galleries.Where(x => x.RemovedAt == null))
                 .ToListAsync();
+            return a;
+        }
 
         public async Task<List<Product_Galleries>> GetProductGalleriesAsync(string uniqueKey)
         => await Entities
@@ -315,7 +318,11 @@ namespace Pezeshkafzar_v2.Services
             .FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task<List<Products>> GetAllProductsAsync()
-            => await Entities.ToListAsync();
+            => await Entities
+            .Include(x=>x.Product_Selected_Groups)
+            .ThenInclude(x=>x.Product_Groups)
+            .OrderByDescending(x=>x.CreatedAt)
+            .ToListAsync();
 
         public async Task<Product_Groups> GetGroupAsync(Guid id)
             => await _productGroups.FindAsync(id);

@@ -16,7 +16,7 @@
 
                 @*<div class="">*@
                 <a href="/" class="logo shpl">
-                    <img src="~/images/logo/main.png" alt="Pezeshkafzar Logo" title="Pezeshkafzar Logo">
+                    <img src="~/images/logo/main.webp" alt="Pezeshkafzar Logo" title="Pezeshkafzar Logo">
                 </a>
                 @*</div>*@
             </div><!-- End .header-left -->
@@ -144,17 +144,9 @@
             <div class="header-right">
                 <div class="header-lightbulb-icon">
                     <p>
-                        @if (!User.Identity.IsAuthenticated || ViewBag.Role == 1)
-                        {
-                            <a href="/RegisterSeller" class="btn btn-outline-info shpl">فروشنده شوید</a>
-                        }
-                        else if (ViewBag.Role == 2)
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
                         {
                             <a href="/Admin" class="btn btn-outline-info shpl">ورود به پنل ادمین</a>
-                        }
-                        else if (ViewBag.Role == 3)
-                        {
-                            <a href="/Seller" class="btn btn-outline-info shpl">ورود به پنل فروشنده</a>
                         }
                     </p>
                 </div>

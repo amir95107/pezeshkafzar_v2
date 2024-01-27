@@ -48,9 +48,9 @@
                                 <div class="col-md">
                                     <div class="entry-tags">
                                         <span>برچسب : </span>
-                                        @foreach (var tag in Model.Tags.Split(','))
+                                        @foreach (var tag in Model.Tags.Split('#'))
                                         {
-                                            <a class="badge badge-outline-success text-success shpl mb-1" href="/Blog/Search?q=@tag">@tag</a>
+                                            <a class="badge badge-outline-success text-success shpl mb-1" href="/Search?q=@tag">@tag</a>
                                         }
                                     </div><!-- End .entry-tags -->
                                 </div><!-- End .col -->

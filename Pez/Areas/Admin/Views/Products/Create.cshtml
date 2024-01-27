@@ -22,106 +22,102 @@
                             لطفا گروه محصول را انتخاب کنید
                         </div>
                     }
-                <div class="form-horizontal">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })
-                        <div class="">
-                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <label class="control-label">عنوان</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">لینک صفحه (در صورت خالی بودن همان عنوان صفحه ثبت میشود)</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.SefUrl, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.SefUrl, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">توضیح کوتاه</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">توضیحات</label>
+                            <div class="">
+                                @Html.TextAreaFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">قیمت</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @min = "1" } })
+                                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">قیمت پس از تخفیف</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.PriceAfterDiscount, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.PriceAfterDiscount, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="row m-0" id="discountsArea">
+                                <a class="btn btn-outline-info m-2 btn-set-discount" onclick="setPriceAfterDiscount(5,event)">5%</a>
+                                <a class="btn btn-outline-info m-2 btn-set-discount" onclick="setPriceAfterDiscount(10,event)">10%</a>
+                                <a class="btn btn-outline-info m-2 btn-set-discount" onclick="setPriceAfterDiscount(15,event)">15%</a>
+                                <a class="btn btn-outline-info m-2 btn-set-discount" onclick="setPriceAfterDiscount(20,event)">20%</a>
+                                <a class="btn btn-outline-info m-2 btn-set-discount" onclick="setPriceAfterDiscount(25,event)">25%</a>
+                                <a class="btn btn-outline-info m-2 btn-set-discount" onclick="setPriceAfterDiscount(30,event)">30%</a>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label ">موجودی انبار</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.Stock, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Stock, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label ">کلمات کلیدی</label>
+                            <div class="">
+                                <input id="Tags" type="text" oninput="searchTags(this.value)" name="tags" class="form-control" placeholder="کلمات کلیدی را با # جدا کنید" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label " for="Garanty">ضمانت محصول</label>
+                            <div class="">
+                                <textarea type="text" name="Garanty" id="Garanty" class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label " for="IsInBestselling">@Html.LabelFor(m => m.IsInBestselling)</label>
+                            <div class="">
+                                @Html.CheckBoxFor(m => m.IsInBestselling)
+                                @* @Html.ValidationMessageFor(model => model.IsInBestselling, "", new { @class = "text-danger" }) *@
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 ">
+                                <input type="submit" value="ثبت محصول" class="btn btn-success" />
+                            </div>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label class="control-label">لینک صفحه (در صورت خالی بودن همان عنوان صفحه ثبت میشود)</label>
-                        <div class="">
-                            @Html.EditorFor(model => model.SefUrl, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.SefUrl, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label " })
-                        <div class="">
-                            @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label " })
-                        <div class="">
-                            @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label " })
-                        <div class="">
-                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @min = "1" } })
-                            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.PriceAfterDiscount, htmlAttributes: new { @class = "control-label " })
-                        <div class="">
-                            @Html.EditorFor(model => model.PriceAfterDiscount, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.PriceAfterDiscount, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="row m-0" id="discountsArea">
-                            <a class="btn btn-outline-info m-2 btn-set-discount" onclick="setPriceAfterDiscount(5,event)">5%</a>
-                            <a class="btn btn-outline-info m-2 btn-set-discount" onclick="setPriceAfterDiscount(10,event)">10%</a>
-                            <a class="btn btn-outline-info m-2 btn-set-discount" onclick="setPriceAfterDiscount(15,event)">15%</a>
-                            <a class="btn btn-outline-info m-2 btn-set-discount" onclick="setPriceAfterDiscount(20,event)">20%</a>
-                            <a class="btn btn-outline-info m-2 btn-set-discount" onclick="setPriceAfterDiscount(25,event)">25%</a>
-                            <a class="btn btn-outline-info m-2 btn-set-discount" onclick="setPriceAfterDiscount(30,event)">30%</a>
-                        </div>
-                    </div>
-
-                    <div>
-                        <a class="btn btn-info" onclick="torobPrice()">استعلام قیمت از ترب</a>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label ">موجودی انبار</label>
-                        <div class="">
-                            @Html.EditorFor(model => model.Stock, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Stock, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label ">کلمات کلیدی</label>
-                        <div class="">
-                            <input id="Tags" type="text" oninput="searchTags(this.value)" name="tags" class="form-control" placeholder="کلمات کلیدی را با , جدا کنید" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label " for="Garanty">ضمانت محصول</label>
-                        <div class="">
-                            <textarea type="text" name="Garanty" id="Garanty" class="form-control"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label " for="IsInBestselling">@Html.LabelFor(m => m.IsInBestselling)</label>
-                        <div class="">
-                            @Html.CheckBoxFor(m => m.IsInBestselling)
-                            @* @Html.ValidationMessageFor(model => model.IsInBestselling, "", new { @class = "text-danger" }) *@
-                        </div>
-                    </div>
-
-
-
-                    <div class="form-group">
-                        <div class="col-md-offset-2 ">
-                            <input type="submit" value="ثبت محصول" class="btn btn-success" />
-                        </div>
-                    </div>
-                </div>
                 </div>
             </div>
             <div class="col-md-4">
@@ -132,8 +128,8 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.ImageName, htmlAttributes: new { @class = "control-label " })
                             @*<div>
-                                    <a class="btn btn-default" onclick="selectFromMedia()">انتخاب از کتابخانه</a>
-                                </div>*@
+                            <a class="btn btn-default" onclick="selectFromMedia()">انتخاب از کتابخانه</a>
+                            </div>*@
                             <div class="">
 
                                 <input type="file" id="imageProduct" enc name="imageProduct" accept="image/*" />
@@ -193,8 +189,8 @@
 
 @section Scripts
 {
-    <script src="/ckeditor/ckeditor.js"></script>
-    <script src="/ckeditor/adapters/jquery.js"></script>
+    <script src="~/admin/content/ckeditor/ckeditor.js"></script>
+    <script src="~/admin/content/ckeditor/adapters/jquery.js"></script>
     <script>
         $(function () {
             $('#Text,#Garanty').ckeditor();
@@ -254,7 +250,7 @@
             return str;
         };
 
-        setPriceAfterDiscount = (discount,e) => {
+        setPriceAfterDiscount = (discount, e) => {
             if (!discount) return;
             const price = $('#Price').val();
             if (!price) return;
@@ -267,7 +263,7 @@
         calculateDiscount = () => {
             const price = $('#Price').val(), after = $('#PriceAfterDiscount').val();
             if (!price || !after) return;
-            const discount = (price-after) / price * 100;
+            const discount = (price - after) / price * 100;
             return discount;
         }
 

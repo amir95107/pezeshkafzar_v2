@@ -6,7 +6,7 @@ namespace Pezeshkafzar_v2.Controllers
     {
         public string GetCookie(string key)
         {
-            return Request.Cookies["Key"].ToString();
+            return Request.Cookies["Key"].ToString(); 
         }
 
         public void SetCookie(string key, string value, int? expireTime)

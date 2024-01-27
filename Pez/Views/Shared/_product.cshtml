@@ -5,7 +5,7 @@
     {
         Model.Price = 1;
     }
-    var discount = (Model.Price - Model.PriceAfterDiscount) * 100 / Model.Price;
+    var discount = Math.Round((Model.Price - Model.PriceAfterDiscount) * 100 / Model.Price,0);
     //Random rnd = new Random();
     //int score = 60 + rnd.Next(40);
     bool hasGaranty = false;

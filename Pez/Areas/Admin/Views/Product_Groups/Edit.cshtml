@@ -13,7 +13,7 @@
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.GroupTitle, htmlAttributes: new { @class = "control-label" })
+            <label class="control-label">عنوان</label>
             <div class="">
                 @Html.EditorFor(model => model.GroupTitle, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.GroupTitle, "", new { @class = "text-danger" })

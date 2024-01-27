@@ -4,20 +4,20 @@
     <thead class=" text-primary">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ImageName)
+                تصویر
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                عنوان
             </th>
             <th>
                 گروه های این محصول
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                قیمت
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.PriceAfterDiscount)
+                قیمت پس از تخفیف
             </th>
 
             <th>
@@ -29,11 +29,14 @@
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.CreateDate)
+                تاریخ ایجاد
             </th>
 
             <th>
                 بازدید
+            </th>
+            <th>
+                وضعیت
             </th>
             <th></th>
         </tr>
@@ -54,12 +57,19 @@
                     <td>
                         @if (item.Product_Selected_Groups.Any())
                         {
-                            <ol class="p-0">
+                            int i = 0;
+                            <ol class="p-0 pgl">
                                 @foreach (var group in item.Product_Selected_Groups)
                                 {
                                     <li>
                                         @group.Product_Groups.GroupTitle
+                                    
                                     </li>
+                                    @if (i != item.Product_Selected_Groups.Count - 1)
+                                    {
+                                        <li>-</li>
+                                    }
+                                    i++;
                                 }
                             </ol>
                         }
@@ -74,7 +84,7 @@
 
                     <td>
                         % @(
-                    (item.Price - item.PriceAfterDiscount)*100/ item.Price
+                          Math.Round((item.Price - item.PriceAfterDiscount) * 100 / item.Price , 0)
                 )
                     </td>
 
@@ -88,6 +98,16 @@
                     <td>
                         @item.Visit
                     </td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="text-success">فعال</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">غیر فعال</span>
+                        }
+
                     <td>
                         <a class="btn btn-default btn-xs p-2 m-1" href="@Url.Action("ProductFeaturs",new {id=item.Id})">ویژگی های محصول</a>
                         <a class="btn btn-info btn-xs p-2 m-1" href="@Url.Action("Gallery",new {id=item.Id})">گالری محصول</a>

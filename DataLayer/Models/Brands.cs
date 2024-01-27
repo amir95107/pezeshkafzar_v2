@@ -1,7 +1,8 @@
-namespace DataLayer.Models
+﻿namespace DataLayer.Models
 {
     using DataLayer.Models.Base;
     using System.Collections.Generic;
+    using System.ComponentModel;
 
     public partial class Brands: GuidAuditableAggregateRoot
     {

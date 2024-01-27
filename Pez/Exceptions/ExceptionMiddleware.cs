@@ -11,7 +11,7 @@ namespace Pezeshkafzar_v2.Exceptions
         public string Message { get; set; }
         public override string ToString()
         {
-            return JsonSerializer.Serialize(this);
+            return JsonSerializer.Serialize(this); 
         }
     }
     public class ExceptionMiddleware

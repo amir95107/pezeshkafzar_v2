@@ -168,4 +168,11 @@ namespace Pezeshkafzar_v2.ViewModels
 
 
     }
+
+    public class EditUserRoleViewModel
+    {
+        public Guid UserId { get; set; }
+        public string Role { get; set; }
+        public string Mobile { get; set; }
+    }
 }

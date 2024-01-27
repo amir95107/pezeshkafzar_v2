@@ -20,6 +20,13 @@ namespace Pezeshkafzar_v2.Services
         public async Task<Addresses> GetAddressAsync(Guid addressId, Guid userId)
         => await _addresses.FirstOrDefaultAsync(x => x.Id == addressId && x.UserId == userId);
 
+        public async Task<List<Users>> GetAllUsersAsync(int take = 20, int skip = 0)
+            => await Entities
+            .Include(x => x.UserInfo)
+            .Take(take)
+            .Skip(skip)
+            .ToListAsync();
+
         public async Task<List<Addresses>> GetUserAddressesAsync(Guid userId)
             => await _addresses.Include(x => x.Users).Where(x => x.UserId == userId).ToListAsync();
 

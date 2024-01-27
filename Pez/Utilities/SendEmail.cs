@@ -12,7 +12,7 @@ namespace Pezeshkafzar_v2.Utilities
         {
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com", 587);
-            mail.From = new MailAddress("pezeshkafzarcom@gmail.com", "پشتیبانی پزشک افزار");
+            mail.From = new MailAddress("pezeshkafzarcom@gmail.com", "پشتیبانی قائم مد");
             mail.To.Add(To);
             if(cc!=null&&cc!=""&&cc!=" ")
             {

@@ -26,10 +26,10 @@
                     @Html.DisplayFor(modelItem => item.FeatureTitle)
                 </td>
                 <td>
-                    <a href="@Url.Action("Edit",new {id=item.FeatureID})" class="btn btn-outline-warning btn-sm">
+                    <a href="@Url.Action("Edit",new {id=item.Id})" class="btn btn-outline-warning btn-sm">
                         <i class="now-ui-icons ui-2_settings-90"></i>
                     </a>
-                    <a href="@Url.Action("Delete",new {id=item.FeatureID})" class="btn btn-outline-danger btn-sm">
+                    <a href="@Url.Action("Delete",new {id=item.Id})" class="btn btn-outline-danger btn-sm">
                         <i class="now-ui-icons ui-1_simple-remove"></i>
                     </a>
                 </td>

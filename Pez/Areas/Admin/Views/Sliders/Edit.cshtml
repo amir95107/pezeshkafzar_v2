@@ -21,21 +21,21 @@
             @Html.HiddenFor(model => model.ImageName)
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                <label class="control-label">عنوان</label>
                 <div class="">
                     @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.Url, htmlAttributes: new { @class = "control-label col-md-2" })
+                <label class="control-label">لینک</label>
                 <div class="">
                     @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.ImageName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <label class="control-label">تصویر</label>
                 <div class="">
                     <input type="file" name="imgUp" />
                     @Html.ValidationMessageFor(model => model.ImageName, "", new { @class = "text-danger" })
@@ -43,23 +43,23 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <label class="control-label">تاریخ شروع</label>
                 <div class="">
-                    <input type="text" name="StartDate" id="StartDate" value="@Model.StartDate.ToString("yyyy/MM/dd")" />
+                    @Html.TextBoxFor(model => model.StartDate)
                     @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <label class="control-label">تاریخ پایان</label>
                 <div class="">
-                    <input type="text" name="EndDate" id="EndDate" value="@Model.EndDate.ToString("yyyy/MM/dd")" />
+                    @Html.TextBoxFor(model => model.EndDate)
                     @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                <label class="control-label">فعال؟</label>
                 <div class="">
                     <div class="checkbox">
                         @Html.EditorFor(model => model.IsActive)

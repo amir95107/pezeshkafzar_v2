@@ -59,7 +59,7 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.ConfigureCustomExceptionMiddleware();
+//app.ConfigureCustomExceptionMiddleware();
 
 //app.MapAreaControllerRoute(
 //    name: "admin",

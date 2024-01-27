@@ -5,6 +5,7 @@ namespace Pezeshkafzar_v2.Repositories
     public interface IUserRepository : IBaseRepository<Users, Guid>
     {
         Task<Users> GetUserAsync(string mobile);
+        Task<List<Users>> GetAllUsersAsync(int take = 20, int skip = 0);
         Task<Users> GetUserAsync(string mobile, string password);
         Task<UserInfo> getUserInfoAsync(string mobile);
         Task<UserInfo> getUserInfoAsync(Guid userId);
