@@ -58,7 +58,7 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
         public async Task<IActionResult> Create(Guid? id)
         {
             ViewBag.BlogID = new SelectList(await _blogRepository.GetBlogsAsync(50,0,null), "Id", "Title");
-            ViewBag.ProductID = new SelectList(await _productRepository.GetAllProductsAsync(), "Id", "Title");
+            ViewBag.ProductID = new SelectList(await _productRepository.GetAllProductsAsync(2000, 0), "Id", "Title");
             if (id != null)
             {
                 ViewBag.ParentID = id;
@@ -104,7 +104,7 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var products = await _productRepository.GetAllProductsAsync();
+            var products = await _productRepository.GetAllProductsAsync(2000, 0);
             ViewBag.BlogID = new SelectList(await _blogRepository.GetBlogsAsync(50, 0, null), "BlogID", "Title", comments.BlogID);
             ViewBag.ProductID = new SelectList(products, "ProductID", "Title", comments.ProductID);
             ViewBag.CommentID = new SelectList(products, "CommentID", "Title", comments.Id);
@@ -125,7 +125,7 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.BlogID = new SelectList(await _blogRepository.GetBlogsAsync(50, 0, null), "BlogID", "Title", comments.BlogID);
-            ViewBag.ProductID = new SelectList(await _productRepository.GetAllProductsAsync(), "ProductID", "Title", comments.ProductID);
+            ViewBag.ProductID = new SelectList(await _productRepository.GetAllProductsAsync(2000, 0), "ProductID", "Title", comments.ProductID);
             return View(comments);
         }
 

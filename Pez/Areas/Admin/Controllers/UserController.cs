@@ -25,23 +25,25 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
             RoleManager = roleManager;
         }
 
-        public async Task<IActionResult> Index([FromQuery] int take, [FromQuery] int skip)
+        public async Task<IActionResult> Index([FromQuery] int page = 1, [FromQuery] int take=20)
         {
             //var users = await _userRepository.GetAllUsersAsync(take, skip);
-            var users = await UserManager.Users.ToListAsync();
+            var users = await UserManager.Users.Include(x => x.UserInfo).Skip(take * (page - 1)).Take(take).ToListAsync();
+            ViewBag.PageCount = (users.Count) / take + 1;
+            ViewBag.PageNumber = page;
+            ViewBag.Take = take;
             return View(users);
         }
 
-        [Route("edit/{id}")]
         public async Task<IActionResult> Edit([FromRoute] Guid id)
         {
             var user = await _userRepository.FindAsync(id);
             ViewBag.Roles = await RoleManager.Roles.Select(x => x.Name).ToListAsync();
             ViewBag.CurrentRole = await UserManager.GetRolesAsync(user);
+            ViewBag.Mobile = user.PhoneNumber;
             return View(new EditUserRoleViewModel
             {
-                UserId = user.Id,
-                Mobile= user.PhoneNumber
+                UserId = user.Id
             });
         }
 
@@ -58,14 +60,30 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    ModelState.AddModelError(userRole.Role, "نقش انتخاب نشده.");
+                    return View(userRole);
                 }
 
-                return View(user);
+                return RedirectToAction("index");
             }
 
             ModelState.AddModelError(userRole.Role, "نقش انتخاب نشده.");
             return View(userRole);
+        }
+
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var user = await _userRepository.FindAsync(id);
+            if (user is null)
+            {
+                ViewBag.Error = "کاربر یافت نشد.";
+                return RedirectToAction("Index");
+            }
+
+            user.IsActive = !user.IsActive;
+            _userRepository.Modify(user);
+            await _userRepository.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
 

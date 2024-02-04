@@ -13,12 +13,11 @@
 
     @using (Html.BeginForm("Gallery", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-        <div class="row">
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.ProductID)
-            <div class="col-md-4">
-                <div class="form-horizontal">
-                    <p>@title</p>
+            <div class="col-md-12">
+            <div class="form-horizontal border p-2 mb-3">
+                    <p>تصویر اصلی @title</p>
                     <div><img src="~/Images/ProductImages/Thumb/@image" width="100" title="@title" alt="@title" /></div>
                     <hr />
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -34,7 +33,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.ImageName, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="">
-                            <input type="file" name="imgUp" />
+                        <input type="file" name="imgUp" />
                             @Html.ValidationMessageFor(model => model.ImageName, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -47,37 +46,37 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8">
-                @{
-                    List<Product_Galleries> list = ViewBag.Galleries;
-
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>تصویر</th>
-                            <th>عنوان</th>
-                            <th></th>
-                        </tr>
-                        @foreach (var item in list)
-                        {
-                            <tr>
-                                <td>
-                                    <img id="gallery-img-@item.Id" src="~/Images/ProductImages/Thumb/@item.ImageName" width="150" class="thumbnail" />
-                                </td>
-                                <td>
-                                    @item.Products.Title
-                                </td>
-                                <td>
-                                    <a class="btn-outline-danger btn btn-sm" href="/Admin/Products/DeleteGallery/@item.Id">
-                                        <i class="now-ui-icons ui-1_simple-remove"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                    </table>
-                }
-            </div>
-        </div>
+            
     }
+    <div class="col-md-12">
+        @{
+            List<Product_Galleries> list = ViewBag.Galleries;
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>تصویر</th>
+                    <th>عنوان</th>
+                    <th></th>
+                </tr>
+                @foreach (var item in list)
+                {
+                    <tr>
+                        <td>
+                            <img id="gallery-img-@item.Id" src="~/Images/ProductImages/Thumb/@item.ImageName" width="150" class="thumbnail" />
+                        </td>
+                        <td>
+                            @item.Products.Title
+                        </td>
+                        <td>
+                            <a class="btn-outline-danger btn btn-sm" href="/Admin/Products/DeleteGallery/@item.Id">
+                                <i class="now-ui-icons ui-1_simple-remove"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
     <div class="text-left">
         <a class="btn btn-outline-warning" href="/admin/products/index">بازگشت به لیست محصولات</a>
     </div>

@@ -22,5 +22,6 @@ public static class RegisterServices
         builder.Services.AddScoped<IDeliverWaysRepository, DeliverWaysRepository>();
         builder.Services.AddScoped<ISliderRepository, SliderRepository>();
         builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+        builder.Services.AddScoped<ILeadRepository, LeadRepository>();
     }
 }

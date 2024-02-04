@@ -15,13 +15,15 @@ namespace Pezeshkafzar_v2.Controllers
         private readonly IProductRepository _productRepository;
         private readonly IUserRepository _userRepository;
         private readonly IBrandRepository _brandRepository;
+        private readonly ILeadRepository _leadRepository;
         private readonly Guid CurrentUserId;
 
         public HomeController(IHomeRepository homeRepository,
             IProductRepository productRepository,
             IUserRepository userRepository,
             IBrandRepository brandRepository,
-            IHttpContextAccessor accessor)
+            IHttpContextAccessor accessor,
+            ILeadRepository leadRepository)
         {
             _homeRepository = homeRepository;
             _productRepository = productRepository;
@@ -29,6 +31,7 @@ namespace Pezeshkafzar_v2.Controllers
             CurrentUserId = Guid.NewGuid();
             _brandRepository = brandRepository;
             CurrentUserId = accessor.HttpContext.User.Identity.IsAuthenticated ? Guid.Parse(accessor.HttpContext.User.Claims.FirstOrDefault().Value) : Guid.Empty;
+            _leadRepository = leadRepository;
         }
 
 
@@ -187,14 +190,13 @@ namespace Pezeshkafzar_v2.Controllers
         }
 
 
-        //public void Lead(string num)
-        //{
-        //    Lead_Clients lead = new Lead_Clients();
-        //    lead.CreateDate = DateTime.Now;
-        //    lead.Mobile = num;
-        //    db.Lead_Clients.Add(lead);
-        //    db.SaveChanges();
-        //}
+        public async Task Lead(string num)
+        {
+            Lead_Clients lead = new Lead_Clients();
+            lead.Mobile = num;
+            await _leadRepository.AddAsync(lead);
+            await _leadRepository.SaveChangesAsync();
+        }
 
         public IActionResult Footer()
         {

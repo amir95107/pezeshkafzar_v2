@@ -8,6 +8,7 @@ namespace DataLayer.Models
     {
         public bool IsUserInfoCompleted { get; set; }
         public bool? IsLocked { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public virtual ICollection<Addresses> Addresses { get; set; } = new HashSet<Addresses>();
         public virtual ICollection<ContactForm> ContactForm { get; set; } = new HashSet<ContactForm>();

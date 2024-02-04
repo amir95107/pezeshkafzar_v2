@@ -317,11 +317,13 @@ namespace Pezeshkafzar_v2.Services
             .Include(x => x.Product_Galleries)
             .FirstOrDefaultAsync(x => x.Id == id);
 
-        public async Task<List<Products>> GetAllProductsAsync()
+        public async Task<List<Products>> GetAllProductsAsync(int take, int skip)
             => await Entities
             .Include(x=>x.Product_Selected_Groups)
             .ThenInclude(x=>x.Product_Groups)
             .OrderByDescending(x=>x.CreatedAt)
+            .Skip(skip)
+            .Take(take)
             .ToListAsync();
 
         public async Task<Product_Groups> GetGroupAsync(Guid id)

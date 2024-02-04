@@ -2,12 +2,22 @@
 <div style="height:75px"></div>
 <div class="container bg-white p-2" dir="rtl">
 
-    <h2 class="text-center p-2 border shadow ">افزودن کاربر جدید</h2>
+    <h2 class="text-center p-2 border shadow ">مدیریت کاربران</h2>
 
-    <div class="pb-2 d-flex align-items-center justify-content-between" dir="rtl" text-align: right">
-        <a class="m-0 btn btn-primary " href="@Url.Action("Create")">افزودن کاربر جدید</a>
+    @* <div class="pb-2 d-flex align-items-center justify-content-between" dir="rtl" text-align: right">
+    <a class="m-0 btn btn-primary " href="@Url.Action("Create")">افزودن کاربر جدید</a>
 
-    </div>
+    </div> *@
+    @if (ViewBag.Error is not null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show rtl" role="alert">
+            @ViewBag.Error
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+    }
     <table class="table">
         <tr>
             <th>ردیف</th>
@@ -15,6 +25,7 @@
             <th>
                 شماره موبایل
             </th>
+            <th>فعال؟</th>
             <th></th>
         </tr>
 
@@ -23,23 +34,43 @@
             foreach (var item in Model)
             {
                 <tr>
-                <td>@c</td>
+                    <td>@c</td>
                     <td>@(item.UserInfo.FirstOrDefault()?.FirstName + item.UserInfo.FirstOrDefault()?.LastName)</td>
                     <td>
                         @Html.DisplayFor(modelItem => item.PhoneNumber)
                     </td>
-
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="text-success">فعال</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">غیر فعال</span>
+                        }
+                    </td>
                     <td>
                         <a class="btn btn-outline-warning btn-xs"
                            data-toggle="tooltip" data-placement="top" title="ویرایش"
                            href="/admin/user/edit/@item.Id">
                             <i class="now-ui-icons ui-2_settings-90"></i>
                         </a>
-                        <a class="btn btn-outline-danger btn-xs"
-                           data-toggle="tooltip" data-placement="top" title="حذف"
-                           href="/admin/user/delete/@item.Id">
-                            <i class="now-ui-icons ui-1_simple-remove"></i>
-                        </a>
+                        @if (item.IsActive)
+                        {
+                            <a class="btn btn-outline-danger btn-xs"
+                               data-toggle="tooltip" data-placement="top" title="غیرفعال"
+                               href="/admin/user/delete/@item.Id">
+                                <i class="now-ui-icons ui-1_simple-remove"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-success btn-xs"
+                               data-toggle="tooltip" data-placement="top" title="فعال"
+                               href="/admin/user/delete/@item.Id">
+                                <i class="now-ui-icons ui-1_check"></i>
+                            </a>
+                        }
                     </td>
                 </tr>
                 c++;
@@ -47,4 +78,28 @@
         }
 
     </table>
+    <nav aria-label="...">
+        <ul class="pagination pagination-sm justify-content-center" dir="ltr">
+
+            @for (int i = 1; i <= ViewBag.PageCount; i++)
+            {
+                var isCurrent = i == ViewBag.PageNumber;
+                <li class="page-item @(isCurrent?"active":"")">
+                    @if (isCurrent)
+                    {
+                        <span class="page-link">
+                            @i
+                            <span class="sr-only">(current)</span>
+                        </span>
+                    }
+                    else
+                    {
+                        <a class="page-link" href="/admin/user?page=@i">
+                            @i
+                        </a>
+                    }
+                </li>
+            }
+        </ul>
+    </nav>
 </div>

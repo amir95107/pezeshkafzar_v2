@@ -57,7 +57,7 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
         public async Task<IActionResult> Create()
         {
             ViewBag.UserID = new SelectList(await UserManager.GetUsersInRoleAsync("Customer"), "UserId", "PhoneNumber");
-            ViewBag.Products = await _productRepository.GetAllProductsAsync();
+            ViewBag.Products = await _productRepository.GetAllProductsAsync(2000,0);
             return View();
         }
 
@@ -323,7 +323,7 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
 
         public async Task<IActionResult> AdminOrderList()
         {
-            List<Products> products = await _productRepository.GetAllProductsAsync();
+            List<Products> products = await _productRepository.GetAllProductsAsync(2000,0);
             ViewBag.Products = products;
             List<ShopCartItem> listShop = JsonConvert.DeserializeObject<List<ShopCartItem>>(_session.GetString("AdminShopCart"));
             return PartialView(listShop);

@@ -6,7 +6,7 @@ namespace Pezeshkafzar_v2.Utilities
 {
     public static class ImageExtentions
     {
-        public async static void UploadAsync(this IFormFile file, string path)
+        public async static Task UploadAsync(this IFormFile file, string path)
         {
             if (file != null && path != null) {
                 using (Stream fileStream = new FileStream(path, FileMode.Create))
@@ -16,7 +16,7 @@ namespace Pezeshkafzar_v2.Utilities
             }
         }
 
-        public async static void UploadsAsync(this IList<IFormFile> files, string path)
+        public async static Task UploadsAsync(this IList<IFormFile> files, string path)
         {
             foreach (IFormFile file in files)
             {
@@ -43,6 +43,7 @@ namespace Pezeshkafzar_v2.Utilities
                         postedFile.ContentType.ToLower() != "image/gif" &&
                         postedFile.ContentType.ToLower() != "image/x-png" &&
                         postedFile.ContentType.ToLower() != "image/webp" &&
+                        postedFile.ContentType.ToLower() != "video/x-matroska" &&
                         postedFile.ContentType.ToLower() != "image/png")
             {
                 return false;
@@ -55,6 +56,7 @@ namespace Pezeshkafzar_v2.Utilities
                 && Path.GetExtension(postedFile.FileName).ToLower() != ".png"
                 && Path.GetExtension(postedFile.FileName).ToLower() != ".gif"
                 && Path.GetExtension(postedFile.FileName).ToLower() != ".webp"
+                && Path.GetExtension(postedFile.FileName).ToLower() != ".mkv"
                 && Path.GetExtension(postedFile.FileName).ToLower() != ".jpeg")
             {
                 return false;

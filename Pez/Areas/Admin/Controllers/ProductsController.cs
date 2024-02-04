@@ -1,14 +1,22 @@
 ﻿using DataLayer.Models;
 using DataLayer.Models.Events;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
+using Microsoft.SqlServer.Server;
 using Pezeshkafzar_v2.Repositories;
 using Pezeshkafzar_v2.Utilities;
 using Pezeshkafzar_v2.ViewModels;
 using System.Data;
-using System.Drawing.Drawing2D;
+using System.Globalization;
+using System.IO.Compression;
+using System.Net;
 using static Pezeshkafzar_v2.Utilities.ImageExtentions;
 
 namespace Pezeshkafzar_v2.Areas.Admin.Controllers
@@ -43,9 +51,12 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ProductsList()
+        public async Task<IActionResult> ProductsList([FromQuery] int page = 1, [FromQuery] int take = 20)
         {
-            var products = await _productRepository.GetAllProductsAsync();
+            var products = await _productRepository.GetAllProductsAsync(take, take * (page - 1));
+            ViewBag.PageCount = (products.Count) / take + 1;
+            ViewBag.PageNumber = page;
+            ViewBag.Take = take;
             return PartialView(products);
         }
 
@@ -113,16 +124,17 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
 
                     products.ImageName = products.ImageName + "_" + Guid.NewGuid().ToString() + Path.GetExtension(imageProduct.FileName);
                     string imagesPath = Path.Combine(_hostingEnvironment.WebRootPath, "Images", "ProductImages");
-                    imageProduct.UploadAsync(imagesPath + "/" + products.ImageName);
+                    var src = Path.Combine(imagesPath, products.ImageName);
+                    await imageProduct.UploadAsync(src);
                     ImageResizer img300 = new ImageResizer(300);
                     try
                     {
-                        img300.Resize(Path.Combine(imagesPath, products.ImageName), Path.Combine(imagesPath, "thumb", products.ImageName));
+                        img300.Resize(src, Path.Combine(imagesPath, "thumb", products.ImageName));
                     }
                     catch (Exception ex)
                     {
 
-                        throw;
+                        throw ex;
                     }
                 }
                 products.IsInBestselling = false;
@@ -177,7 +189,27 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.Groups = await _productRepository.GetProductGroupsAsync(false);
-            return View(products);
+            return View(new CreateProductViewModel
+            {
+                UniqueKey = StringExtensions.RandomString(6),
+                Garanty = input["Garanty"],
+                ImageName = input["ImageName"],
+                IsInBestselling = bool.Parse(input["IsInBestselling"].ToString().Split(',')[0]),
+                Price = decimal.Parse(input["Price"]),
+                PriceAfterDiscount = decimal.Parse(input["PriceAfterDiscount"]),
+                SefUrl = input["SefUrl"],
+                ShortDescription = input["ShortDescription"],
+                Stock = int.Parse(input["Stock"]),
+                Text = input["Text"],
+                Title = input["Title"],
+                CreateDate = DateTime.Now,
+                LastUpdated = DateTime.Now,
+                LikeCount = 0,
+                Point = 0,
+                IsAcceptedByAdmin = true,
+                IsActive = true,
+                Visit = 0
+            });
         }
 
         // GET: Admin/Products/Edit/5
@@ -207,8 +239,16 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(IFormCollection input, List<Guid> selectedGroups, IFormFile imageProduct, string tags)
         {
             var products = await _productRepository.FindProductWithChildrenAsync(Guid.Parse(input["Id"]));
-            if (true)
+
+
+            if (ModelState.IsValid)
             {
+                if (selectedGroups == null)
+                {
+                    ViewBag.ErrorSelectedGroup = true;
+                    ViewBag.Groups = await _productRepository.GetProductGroupsAsync(false);
+                    return View(products);
+                }
 
                 if (products is null)
                     return BadRequest();
@@ -218,16 +258,16 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
 
                     products.ImageName = products.ImageName + "_" + Guid.NewGuid().ToString() + Path.GetExtension(imageProduct.FileName);
                     string imagesPath = Path.Combine(_hostingEnvironment.WebRootPath, "Images", "ProductImages");
-                    imageProduct.UploadAsync(imagesPath + "/" + products.ImageName);
+                    var src = Path.Combine(imagesPath, products.ImageName);
+                    await imageProduct.UploadAsync(imagesPath);
                     ImageResizer img300 = new ImageResizer(300);
                     try
                     {
-                        img300.Resize(Path.Combine(imagesPath, products.ImageName), Path.Combine(imagesPath, "thumb", products.ImageName));
+                        img300.Resize(src, Path.Combine(imagesPath, "thumb", products.ImageName));
                     }
                     catch (Exception ex)
                     {
-
-                        throw;
+                        throw ex;
                     }
                 }
                 if (products.SefUrl == null || products.SefUrl == "")
@@ -278,6 +318,8 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
                 await _productRepository.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+
+            return View(products);
         }
 
         private bool CompareArrays(string[] arr1, string[] arr2)
@@ -340,39 +382,94 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
             });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Gallery(Product_Galleries galleries, IFormFile imgUp)
+        public class GenerateAntiforgeryTokenCookieAttribute : ResultFilterAttribute
         {
-            if (true)
+            public override void OnResultExecuting(ResultExecutingContext context)
+            {
+                var antiforgery = context.HttpContext.RequestServices.GetService<IAntiforgery>();
+
+                // Send the request token as a JavaScript-readable cookie
+                var tokens = antiforgery.GetAndStoreTokens(context.HttpContext);
+
+                context.HttpContext.Response.Cookies.Append(
+                    "RequestVerificationToken",
+                    tokens.RequestToken,
+                    new CookieOptions() { HttpOnly = false });
+            }
+
+            public override void OnResultExecuted(ResultExecutedContext context)
+            {
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+        public class DisableFormValueModelBindingAttribute : Attribute, IResourceFilter
+        {
+            public void OnResourceExecuting(ResourceExecutingContext context)
+            {
+                var factories = context.ValueProviderFactories;
+                factories.RemoveType<FormValueProviderFactory>();
+                factories.RemoveType<FormFileValueProviderFactory>();
+                factories.RemoveType<JQueryFormValueProviderFactory>();
+            }
+
+            public void OnResourceExecuted(ResourceExecutedContext context)
+            {
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> Gallery(Product_Galleries gallery, IFormFile imgUp)
+        {
+            //var gallery = new ProductGalleryViewModel
+            //{
+            //    ImageName = galleries["ImageName"],
+            //    ProductID = Guid.Parse(galleries["ProductID"]),
+            //    Title = galleries["Title"]
+            //};
+            if (!string.IsNullOrWhiteSpace(gallery.Title))
             {
                 if (imgUp != null && imgUp.IsImage())
                 {
-                    Products products = await _productRepository.GetProductWithGalleriesAsync(galleries.ProductID);
-
+                    Products products = await _productRepository.GetProductWithGalleriesAsync(gallery.ProductID);
+                    var type = GalleryType.Image;
                     string imagesPath = Path.Combine(_hostingEnvironment.WebRootPath, "Images", "ProductImages");
-                    imgUp.UploadAsync(imagesPath + "/" + products.ImageName);
-                    ImageResizer img300 = new ImageResizer(300);
-                    try
+                    if (!imgUp.FileName.Contains(".mp4"))
                     {
-                        img300.Resize(Path.Combine(imagesPath, products.ImageName), Path.Combine(imagesPath, "thumb", products.ImageName));
-                    }
-                    catch (Exception ex)
-                    {
+                        ImageResizer img300 = new ImageResizer(300);
+                        try
+                        {
+                            img300.Resize(Path.Combine(imagesPath, products.ImageName), Path.Combine(imagesPath, "thumb", products.ImageName));
+                        }
+                        catch (Exception ex)
+                        {
 
-                        throw;
+                            throw;
+                        }
                     }
+                    else
+                    {
+                        imagesPath = Path.Combine(_hostingEnvironment.WebRootPath, "vidoes");
+                        type = GalleryType.Video;
+                    }
+                    imagesPath = Path.Combine(imagesPath, products.ImageName);
+                    await imgUp.UploadAsync(imagesPath);
+
                     products.Apply(new ProductGalleryChanged
                     {
-                        Title = galleries.Title,
-                        ImageName = imgUp.FileName,
-                        ProductId = products.Id
+                        Title = gallery.Title,
+                        ImageName = imagesPath,
+                        ProductId = products.Id,
+                        GalleryType = type
                     });
                     _productRepository.Modify(products);
                     await _productRepository.SaveChangesAsync();
                 }
             }
 
-            return RedirectToAction("Gallery", new { id = galleries.ProductID });
+            return RedirectToAction("Gallery", new { id = gallery.ProductID });
         }
 
         public async Task<IActionResult> DeleteGallery(Guid id)
@@ -478,7 +575,7 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBrands(Brands brand, IFormFile BrandImageName)
         {
-            
+
             if (brand.BrandTitle != null && BrandImageName != null)
             {
                 brand.BrandImageName = BrandImageName.FileName;
@@ -563,7 +660,7 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
 
         public async Task<IActionResult> CreateSpecialProduct()
         {
-            ViewBag.Products = await _productRepository.GetAllProductsAsync();
+            ViewBag.Products = await _productRepository.GetAllProductsAsync(2000, 0);
             return View();
         }
 
@@ -612,7 +709,7 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
             _productRepository.Modify(product);
             await _productRepository.SaveChangesAsync();
 
-            return PartialView("ProductsList", await _productRepository.GetAllProductsAsync());
+            return PartialView("ProductsList", await _productRepository.GetAllProductsAsync(20, 0));
         }
 
         public async Task<IActionResult> ActivateProduct(Guid id)
@@ -622,7 +719,7 @@ namespace Pezeshkafzar_v2.Areas.Admin.Controllers
             _productRepository.Modify(product);
             await _productRepository.SaveChangesAsync();
 
-            return PartialView("ProductsList", await _productRepository.GetAllProductsAsync());
+            return PartialView("ProductsList", await _productRepository.GetAllProductsAsync(20, 0));
         }
 
         //public Task<IActionResult> SortByVisit(bool acc)

@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<DataLayer.Models.Products>
 
-<table class="dataTable table table-bordered table-responsive products_table bg-white d-md-table" dir="rtl">
+<table class="table table-bordered table-responsive products_table bg-white d-md-table" dir="rtl">
     <thead class=" text-primary">
         <tr>
             <th>
@@ -136,3 +136,27 @@
     </tbody>
 
 </table>
+<nav aria-label="...">
+    <ul class="pagination pagination-sm justify-content-center" dir="ltr">
+
+        @for (int i = 1; i <= ViewBag.PageCount; i++)
+        {
+            var isCurrent = i == ViewBag.PageNumber;
+            <li class="page-item @(isCurrent?"active":"")">
+                @if (isCurrent)
+                {
+                    <span class="page-link">
+                        @i
+                        <span class="sr-only">(current)</span>
+                    </span>
+                }
+                else
+                {
+                    <a class="page-link" href="/admin/products?page=@i">
+                        @i
+                    </a>
+                }
+            </li>
+        }
+    </ul>
+</nav>

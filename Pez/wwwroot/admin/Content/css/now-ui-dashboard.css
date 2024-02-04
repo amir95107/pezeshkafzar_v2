@@ -3037,7 +3037,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 
 .alert button.close {
   position: absolute;
-  right: 10px;
+  left: 10px;
   top: 50%;
   margin-top: -13px;
   width: 25px;
@@ -3045,9 +3045,13 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
   padding: 3px;
 }
 
-.alert .close~span {
-  display: block;
-  max-width: 89%;
+.alert-dismissible.rtl{
+    padding-right:1rem
+}
+
+.alert .close ~ span {
+    display: block;
+    max-width: 89%;
 }
 
 .alert.alert-with-icon {

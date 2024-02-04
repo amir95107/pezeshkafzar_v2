@@ -42,7 +42,7 @@ namespace Pezeshkafzar_v2.Repositories
         Task<List<Comments>> GetProductCommentsAsync(Guid productId);
         Task<List<Comments>> GetProductCommentsAsync(string uniqueKey);
         Task<List<Products>> GetProductListAsync(int take, int skip, string title, decimal minPrice, decimal maxPrice, List<Guid>? selectedGroups, Guid? brandId);
-        Task<List<Products>> GetAllProductsAsync();
+        Task<List<Products>> GetAllProductsAsync(int take, int skip);
         Task<int> GetProductListCountAsync(string title, decimal minPrice, decimal maxPrice, List<Guid>? selectedGroups, Guid? brandId);
         Task<List<Products>> GetAcceptedProductsAsync( );
         Task<List<Products>> GetRelatedProductsAsync(Guid productId, int take);

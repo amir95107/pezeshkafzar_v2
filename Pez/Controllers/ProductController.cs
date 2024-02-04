@@ -238,7 +238,7 @@ namespace Pezeshkafzar_v2.Controllers
         }
 
         [Route("Categories")]
-        public ActionResult Categories()
+        public IActionResult Categories()
         {
             return View();
         }

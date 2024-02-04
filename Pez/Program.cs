@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Pezeshkafzar_v2.Exceptions;
 using Pezeshkafzar_v2.Services;
+using static Pezeshkafzar_v2.Areas.Admin.Controllers.ProductsController;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +28,27 @@ builder.Services.AddIdentity<Users, IdentityRole<Guid>>(options =>
 
 builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/login");
 
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions
+        .AddPageApplicationModelConvention("/StreamedSingleFileUploadDb",
+            model =>
+            {
+                model.Filters.Add(
+                    new GenerateAntiforgeryTokenCookieAttribute());
+                model.Filters.Add(
+                    new DisableFormValueModelBindingAttribute());
+            });
+    options.Conventions
+        .AddPageApplicationModelConvention("/StreamedSingleFileUploadPhysical",
+            model =>
+            {
+                model.Filters.Add(
+                    new GenerateAntiforgeryTokenCookieAttribute());
+                model.Filters.Add(
+                    new DisableFormValueModelBindingAttribute());
+            });
+});
 
 builder.Services.AddHttpContextAccessor();
 

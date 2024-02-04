@@ -6,6 +6,13 @@ namespace DataLayer.Models
     {
         public string Mobile { get; set; }
 
+        public Lead_Clients()
+        {
+            Id=Guid.NewGuid();
+            CreatedAt = DateTime.Now;
+            ModifiedAt = DateTime.Now;
+        }
+
         protected override void EnsureReadyState(object @event)
         {
             throw new NotImplementedException();

@@ -14,6 +14,7 @@ namespace DataLayer.Models.Events
         public Guid GalleryId { get; set; }
         public Guid ProductId { get; set; }
         public string ImageName { get; set; }
+        public GalleryType GalleryType { get; set; }
     }
 
     public class ProductFeatureChanged : DomainEvent
